@@ -14,8 +14,12 @@ export class BaseViewModel {
     this.stateCallback?.(state)
   }
 
-  request(checkResult?: boolean) {
-    return useRequestStatus(state => this.dispatchViewState(state), checkResult)
+  request(value?: {checkResult?: boolean,useSource?: boolean}) {
+    return useRequestStatus(state => this.dispatchViewState(state), value?.checkResult,value?.useSource)
+  }
+
+  jumpToWebContent() {
+
   }
 }
 

@@ -1,6 +1,7 @@
 import axios from '@ohos/axios'
 import { ViewStateConstant } from '../constants/ViewStateConstant'
 import { JsonUtils } from '../utils/JsonUtils'
+import showToast from '../utils/ToastUtils'
 type LoadStateResult = {
   promise: <T>(requestPromise: Promise<T>, showLoadingState?: boolean) => Promise<T>
 }
@@ -18,7 +19,7 @@ export interface ApiResponse<T = any> extends BaseResponse {
 }
 
 
-const useRequestStatus = (stateCallback?: (state: string) => void, checkResult: boolean = false): LoadStateResult => {
+const useRequestStatus = (stateCallback?: (state: string) => void, checkResult: boolean = false, useSource: boolean = false): LoadStateResult => {
 
   function updateViewState(state: string) {
     stateCallback?.(state)
@@ -43,7 +44,7 @@ const useRequestStatus = (stateCallback?: (state: string) => void, checkResult: 
         } else {
           updateViewState(ViewStateConstant.VIEW_STATE_SUCCESS)
         }
-        resolve(resultData);
+        resolve(useSource ? res: resultData);
       }).catch((error) => {
         if (axios.isAxiosError(error)) {
           updateViewState(ViewStateConstant.VIEW_STATE_NETWORK_ERROR)

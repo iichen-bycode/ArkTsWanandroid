@@ -10,10 +10,6 @@
  "url": "https://www.wanandroid.com/blog/show/3352"
  }
  */
-export class BannerModel{
- bannerList: Banner[]
-}
-
 export class Banner {
   id: number;
   desc: string;

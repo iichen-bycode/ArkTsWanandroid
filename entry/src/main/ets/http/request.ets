@@ -1,11 +1,12 @@
 import axios, {
 AxiosError,
   AxiosInstance,
-  AxiosRequestConfig,
   AxiosRequestHeaders,
   AxiosResponse,
   InternalAxiosRequestConfig
 } from "@ohos/axios";
+import { StorageKeys } from '../constants/StorageKeys';
+import { StorageUtils } from '../utils/StorageUtils';
 import showToast from '../utils/ToastUtils';
 
 class AxiosHttpRequest {
@@ -16,11 +17,12 @@ class AxiosHttpRequest {
   constructor(options: HttpRequestConfig) {
     this.config = options;
     this.interceptorHooks = options.interceptorHooks;
-    this.instance = axios.create(options);
+    this.instance = axios.create(this.config);
     this.setupInterceptor()
   }
 
   setupInterceptor(): void {
+    this.instance.defaults.headers
     this.instance.interceptors.request.use(
       //这里主要是高版本的axios中设置拦截器的时候里面的Config属性必须是InternalAxiosRequestConfig，但是InternalAxiosRequestConfig里面的headers是必传，所以在实现的子类我设置成非必传会报错，加了个忽略注解
       // @ts-ignore
@@ -106,9 +108,11 @@ export function errorHandler(error: any) {
     switch (error.response.status) {
     // 401: 未登录
       case 401:
-
+        StorageUtils.put(StorageKeys.USER_INFO_KEY, "")
+        showToast("登录过期，请重新登录")
         break;
       case 403:
+        StorageUtils.put(StorageKeys.USER_INFO_KEY, "")
         showToast("登录过期，请重新登录")
         break;
       case 404:

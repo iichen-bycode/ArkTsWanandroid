@@ -1,4 +1,6 @@
 import { TabItem } from '../model/TabItem'
+import { BarUtils } from '../utils/BarUtils'
+import { StatusBarManager } from '../utils/StatusBarManager'
 import MainViewModel from '../viewmodel/MainViewModel'
 import { AuthorPage } from './anthor/AuthorPage'
 import { HomePage } from './home/HomePage'
@@ -42,7 +44,7 @@ struct MainPage {
       .onChange((index: number) => {
         this.selectedIndex = index;
       })
-    }
+    }.padding({top: BarUtils.getToolBarHeight()})
   }
 
   @Builder TabBottom(item: TabItem, index: number) {

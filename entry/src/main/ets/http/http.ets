@@ -1,4 +1,5 @@
 import { AxiosError, AxiosRequestHeaders } from '@ohos/axios';
+import hilog from '@ohos.hilog';
 import { StorageKeys } from '../constants/StorageKeys';
 import { RoutePath } from '../route/RoutePath';
 import { Router } from '../route/Router';
@@ -6,6 +7,8 @@ import { hideLoadingDialog, showLoadingDialog } from '../utils/DialogUtils';
 import { StorageUtils } from '../utils/StorageUtils';
 import showToast from '../utils/ToastUtils';
 import AxiosHttpRequest, { errorHandler } from './request';
+import { JsonUtils } from '../utils/JsonUtils';
+
 /**
  * 具体实例
  */
@@ -15,9 +18,15 @@ const axiosClient = new AxiosHttpRequest({
   checkResultCode: false,
   headers: {
     'Content-Type': 'application/json'
+    // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
   } as AxiosRequestHeaders,
   interceptorHooks: {
     requestInterceptor: async (config) => {
+      // 在发送请求之前做一些处理，例如打印请求信息
+      hilog.debug(0x001,"iichen_tag",'%{public}s, %{public}s','网络请求Request 请求方法:', `${config.method}`);
+      hilog.debug(0x001,"iichen_tag",'%{public}s, %{public}s','网络请求Request 请求链接:', `${config.url}`);
+      hilog.debug(0x001,"iichen_tag",'%{public}s, %{public}s','网络请求Request Params:', `\n${JsonUtils.stringify(config.params)}`);
+      hilog.debug(0x001,"iichen_tag",'%{public}s, %{public}s','网络请求Request Data:', `${JsonUtils.stringify(config.data)}`);
       axiosClient.config.showLoading = config.showLoading
       if (config.showLoading) {
         // 发送event
@@ -43,7 +52,7 @@ const axiosClient = new AxiosHttpRequest({
       }
       return err;
     },
-    responseInterceptor: (response) => {
+    responseInterceptor: async (response) => {
       if (axiosClient.config.showLoading) {
         hideLoadingDialog()
       }
@@ -56,6 +65,7 @@ const axiosClient = new AxiosHttpRequest({
         }
         return Promise.resolve(response.data);
       } else {
+        showToast(response.data.errorMsg)
         return Promise.reject(response);
       }
     },
@@ -66,7 +76,7 @@ const axiosClient = new AxiosHttpRequest({
       errorHandler(error);
       return Promise.reject(error);
     },
-  }
+  },
 });
 
 /**

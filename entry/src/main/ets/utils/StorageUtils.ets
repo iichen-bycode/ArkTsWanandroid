@@ -2,7 +2,7 @@ import dataPreferences from '@ohos.data.preferences'
 /**
  * 项目全局存储，使用ohos.data.preferences
  */
-const defaultPreferenceName = "OPEN_EYE_PREFERENCES"
+const defaultPreferenceName = "WAN_ANDROID"
 
 type ValueType = number | string | boolean | Array<number> | Array<string> | Array<boolean>;
 
