@@ -77,6 +77,7 @@ interface HttpRequestConfig extends InternalAxiosRequestConfig {
   checkResultCode?: boolean; //是否检验响应结果码
   checkLoginState?: boolean //校验用户登陆状态
   needJumpToLogin?: boolean //是否需要跳转到登陆页面
+  needStorageSessionId?: boolean //是否需要设置SessionId,后续框架支持cookie持久化后去除
   interceptorHooks?: InterceptorHooks
   headers?: AxiosRequestHeaders
 }

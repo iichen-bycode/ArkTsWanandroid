@@ -90,6 +90,7 @@ export function login(params:{username:string,password:string}) {
   return axiosClient.post<any>({
     url: `user/login`,
     params:params,
+    needStorageSessionId:true
   })
 }
 

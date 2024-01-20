@@ -1,4 +1,8 @@
 export class MainViewModel {
+  // 框架支持cookie持久化后去除
+  sessionId:string = ''
+
+
   /**
    * 首页底部Tab显示数据
    */
@@ -11,13 +15,13 @@ export class MainViewModel {
     },
     {
       index: 1,
-      title: "发现",
+      title: "公众号",
       imageActivated: $r('app.media.icon_sel_find'),
       imageOriginal: $r('app.media.icon_unsel_find')
     },
     {
       index: 2,
-      title: "热门",
+      title: "问答",
       imageActivated: $r('app.media.icon_sel_hot'),
       imageOriginal: $r('app.media.icon_unsel_hot')
     },

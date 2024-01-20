@@ -1,4 +1,4 @@
-import { AxiosError, AxiosRequestHeaders } from '@ohos/axios';
+import axios, { AxiosError, AxiosRequestHeaders } from '@ohos/axios';
 import hilog from '@ohos.hilog';
 import { StorageKeys } from '../constants/StorageKeys';
 import { RoutePath } from '../route/RoutePath';
@@ -8,6 +8,7 @@ import { StorageUtils } from '../utils/StorageUtils';
 import showToast from '../utils/ToastUtils';
 import AxiosHttpRequest, { errorHandler } from './request';
 import { JsonUtils } from '../utils/JsonUtils';
+import mainViewModel from '../viewmodel/MainViewModel';
 
 /**
  * 具体实例
@@ -23,11 +24,14 @@ const axiosClient = new AxiosHttpRequest({
   interceptorHooks: {
     requestInterceptor: async (config) => {
       // 在发送请求之前做一些处理，例如打印请求信息
+      config.headers['Cookie'] = mainViewModel.sessionId
       hilog.debug(0x001,"iichen_tag",'%{public}s, %{public}s','网络请求Request 请求方法:', `${config.method}`);
       hilog.debug(0x001,"iichen_tag",'%{public}s, %{public}s','网络请求Request 请求链接:', `${config.url}`);
       hilog.debug(0x001,"iichen_tag",'%{public}s, %{public}s','网络请求Request Params:', `\n${JsonUtils.stringify(config.params)}`);
       hilog.debug(0x001,"iichen_tag",'%{public}s, %{public}s','网络请求Request Data:', `${JsonUtils.stringify(config.data)}`);
       axiosClient.config.showLoading = config.showLoading
+      axiosClient.config.needStorageSessionId = config.needStorageSessionId
+
       if (config.showLoading) {
         // 发送event
         showLoadingDialog("加载中...")
@@ -53,6 +57,16 @@ const axiosClient = new AxiosHttpRequest({
       return err;
     },
     responseInterceptor: async (response) => {
+      if(axiosClient.config.needStorageSessionId) {
+        // 定义正则表达式模式
+        const jsessionIdRegex = /JSESSIONID\s+([^\s]+)/;
+        // 在字符串中查找匹配项
+        const match = response.cookies.match(jsessionIdRegex);
+        // 提取 JSESSIONID
+        const jsessionId = match ? match[1] : null;
+        mainViewModel.sessionId = `JSESSIONID=${jsessionId}`
+        StorageUtils.put(StorageKeys.USER_INFO_KEY, mainViewModel.sessionId)
+      }
       if (axiosClient.config.showLoading) {
         hideLoadingDialog()
       }

@@ -1,10 +1,13 @@
 import { collectArticle, getHomeArticle, getHomeBanner, getHotTopArticle, unCollectArticle } from '../http/api';
+import { HomeArticleModel } from '../model/HomeArticleModel';
 import { JsonUtils } from '../utils/JsonUtils';
 import showToast from '../utils/ToastUtils';
 import { BaseViewModel, ResultCallback } from './BaseViewMode';
 
 export class HomeViewModel extends BaseViewModel{
   private page: number = 0
+  private articleModel: HomeArticleModel = new HomeArticleModel()
+
 
   tagColor: Color[] = [
     Color.Green,
@@ -27,13 +30,27 @@ export class HomeViewModel extends BaseViewModel{
    * 分页获取文章
    * @param callback
    */
-  async getHomeArticle(callback: ResultCallback) {
-    ++this.page
-    await this.request()
-      .promise(getHomeArticle(this.page))
-      .then((result) => {
-        callback(result)
-      })
+  async getHomeArticle(isRefresh:boolean = false,callback: ResultCallback) {
+    if(isRefresh) {
+      this.page = 0
+      this.articleModel.over = false
+    }
+    if(this.articleModel.over && false) {
+      callback([])
+    } else {
+      let hotTopArticle = []
+      if(this.page == 0) {
+        hotTopArticle = await this.request()
+          .promise(getHotTopArticle())
+      }
+      await this.request()
+        .promise(getHomeArticle(this.page))
+        .then((result) => {
+          ++this.page
+          this.articleModel = result
+          callback([...hotTopArticle,...this.articleModel.datas])
+        })
+    }
   }
 
   /**
@@ -41,13 +58,8 @@ export class HomeViewModel extends BaseViewModel{
    * @param callback
    */
   async getArticle(callback: ResultCallback) {
-    const hotTopArticle = await this.request()
-      .promise(getHotTopArticle())
 
-    this.page = 0
-    const homeArticle = await this.request()
-      .promise(getHomeArticle(this.page))
-    callback([...hotTopArticle,homeArticle.datas])
+
   }
 
   /**

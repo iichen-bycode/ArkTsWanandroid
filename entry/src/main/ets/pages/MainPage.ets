@@ -1,7 +1,9 @@
+import { StorageKeys } from '../constants/StorageKeys'
 import { TabItem } from '../model/TabItem'
 import { BarUtils } from '../utils/BarUtils'
 import { StatusBarManager } from '../utils/StatusBarManager'
-import MainViewModel from '../viewmodel/MainViewModel'
+import { StorageUtils } from '../utils/StorageUtils'
+import mainViewModel from '../viewmodel/MainViewModel'
 import { AuthorPage } from './anthor/AuthorPage'
 import { HomePage } from './home/HomePage'
 import { QuestionPage } from './question/Question'
@@ -10,6 +12,13 @@ import { SquarePage } from './square/Square'
 @Component
 struct MainPage {
   @State selectedIndex: number = 0
+
+  aboutToAppear() {
+    // 框架支持cookie持久化后去除
+    StorageUtils.get(StorageKeys.USER_INFO_KEY, '').then((v) => {
+      mainViewModel.sessionId = v.toString()
+    })
+  }
 
   build() {
     Column() {
@@ -20,22 +29,22 @@ struct MainPage {
         TabContent() {
           HomePage()
         }
-        .tabBar(this.TabBottom(MainViewModel.tabTitle[0], 0))
+        .tabBar(this.TabBottom(mainViewModel.tabTitle[0], 0))
 
         TabContent() {
           AuthorPage()
         }
-        .tabBar(this.TabBottom(MainViewModel.tabTitle[1], 1))
+        .tabBar(this.TabBottom(mainViewModel.tabTitle[1], 1))
 
         TabContent() {
           QuestionPage()
         }
-        .tabBar(this.TabBottom(MainViewModel.tabTitle[2], 2))
+        .tabBar(this.TabBottom(mainViewModel.tabTitle[2], 2))
 
         TabContent() {
           SquarePage()
         }
-        .tabBar(this.TabBottom(MainViewModel.tabTitle[3], 3))
+        .tabBar(this.TabBottom(mainViewModel.tabTitle[3], 3))
       }
       .barMode(BarMode.Fixed)
       .barWidth('100%')
