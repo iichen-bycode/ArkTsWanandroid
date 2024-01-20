@@ -1,4 +1,6 @@
 import useRequestStatus from '../http/run'
+import { RoutePath } from '../route/RoutePath'
+import { Router } from '../route/Router'
 export type StateCallback = (state: string) => void
 
 export type ResultCallback = (result: any) => void
@@ -18,8 +20,11 @@ export class BaseViewModel {
     return useRequestStatus(state => this.dispatchViewState(state), value?.checkResult,value?.useSource)
   }
 
-  jumpToWebContent() {
-
+  jumpToWebContent(src:string,title:string) {
+    Router.push(RoutePath.WebPage,{
+      'src': src,
+      'title': title
+    })
   }
 }
 

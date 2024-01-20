@@ -1,6 +1,7 @@
-import { collectArticle, getHomeArticle, getHomeBanner, getHotTopArticle, unCollectArticle } from '../http/api';
+import { collectArticle, getHomeArticle, getHomeBanner, getHotSearchKeys, getHotTopArticle, search, unCollectArticle } from '../http/api';
 import { HomeArticleModel } from '../model/HomeArticleModel';
-import { JsonUtils } from '../utils/JsonUtils';
+import { HotSearchKeysModel } from '../model/HotSearchKeyModel';
+import { Router } from '../route/Router';
 import showToast from '../utils/ToastUtils';
 import { BaseViewModel, ResultCallback } from './BaseViewMode';
 
@@ -54,15 +55,6 @@ export class HomeViewModel extends BaseViewModel{
   }
 
   /**
-   * 文章和置顶文章拼接
-   * @param callback
-   */
-  async getArticle(callback: ResultCallback) {
-
-
-  }
-
-  /**
    * 收藏文章
    * @param callback
    */
@@ -90,6 +82,35 @@ export class HomeViewModel extends BaseViewModel{
           showToast("取消收藏成功！")
         }
       })
+  }
+
+
+  hotSearchKeyIndex:number = 0
+  getHotSearchKey() : string {
+    const len = this.hotSearchKeys.length
+    if(len == 0)
+      return ''
+    ++this.hotSearchKeyIndex
+    if(this.hotSearchKeyIndex >= len) {
+      this.hotSearchKeyIndex = 0
+    }
+    return this.hotSearchKeys[this.hotSearchKeyIndex].name
+  }
+  hotSearchKeys: HotSearchKeysModel[] = []
+  /**
+   * 搜索热词
+   * @param callback
+   */
+  async getHotSearchKeyArray() {
+    await this.request()
+      .promise(getHotSearchKeys())
+      .then((result) => {
+        this.hotSearchKeys = result
+      })
+  }
+
+  toPage(url:string,params?:{}) {
+    Router.push(url,params)
   }
 }
 

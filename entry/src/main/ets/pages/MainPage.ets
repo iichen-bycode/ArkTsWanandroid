@@ -1,8 +1,10 @@
+import emitter from '@ohos.events.emitter'
 import { StorageKeys } from '../constants/StorageKeys'
+import { mainPageShow } from '../event/EventKeys'
 import { TabItem } from '../model/TabItem'
 import { BarUtils } from '../utils/BarUtils'
-import { StatusBarManager } from '../utils/StatusBarManager'
 import { StorageUtils } from '../utils/StorageUtils'
+import showToast from '../utils/ToastUtils'
 import mainViewModel from '../viewmodel/MainViewModel'
 import { AuthorPage } from './anthor/AuthorPage'
 import { HomePage } from './home/HomePage'
@@ -12,6 +14,10 @@ import { SquarePage } from './square/Square'
 @Component
 struct MainPage {
   @State selectedIndex: number = 0
+
+  onPageShow() {
+    emitter.emit(mainPageShow, {  })
+  }
 
   aboutToAppear() {
     // 框架支持cookie持久化后去除

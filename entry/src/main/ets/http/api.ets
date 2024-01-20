@@ -4,6 +4,7 @@ import { Banner } from '../model/BannerModel'
 import axiosClient from './http'
 import { HomeArticleModel } from '../model/HomeArticleModel'
 import { Article } from '../model/ArticleModel'
+import { HotSearchKeysModel } from '../model/HotSearchKeyModel'
 /**
  * 请求首页Banner
  * @param date
@@ -12,6 +13,17 @@ import { Article } from '../model/ArticleModel'
 export function getHomeBanner() {
   return axiosClient.get<Banner[]>({
     url: "banner/json",
+  })
+}
+
+/**
+ * 搜索热词
+ * @param date
+ * @returns
+ */
+export function getHotSearchKeys() {
+  return axiosClient.get<HotSearchKeysModel[]>({
+    url: `hotkey/json`,
   })
 }
 
@@ -91,6 +103,17 @@ export function login(params:{username:string,password:string}) {
     url: `user/login`,
     params:params,
     needStorageSessionId:true
+  })
+}
+
+/**
+ * 搜索
+ * @param date
+ * @returns
+ */
+export function search(page:number,key:string) {
+  return axiosClient.post<HomeArticleModel>({
+    url: `article/query/${page}/json?k=${key}`
   })
 }
 

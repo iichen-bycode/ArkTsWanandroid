@@ -1,17 +1,18 @@
-import { Article, Tags } from '../../../model/ArticleModel'
-import showToast from '../../../utils/ToastUtils'
+import { Article } from '../../../model/ArticleModel'
 import { RefreshFooter } from '../../../view/RefreshFooter'
+import { ResultCallback } from '../../../viewmodel/BaseViewMode'
 import homeViewModel from '../../../viewmodel/HomeViewModel'
 import { ArticleItem } from './ArticleItem'
 
 @Component
-@Entry
 export struct ListComponent {
   @State articleList: Article[] = []
   @State refresh:boolean = false
   @State showEmpty:boolean = false
   @State showLoading:boolean = false
 
+  onReachEnd: (callback: ResultCallback) => void
+  onRefreshing: (callback: ResultCallback) => void
 
   build() {
     Refresh({refreshing: $$this.refresh}) {
@@ -28,6 +29,9 @@ export struct ListComponent {
           .borderRadius($r('app.float.size_8'))
           .padding($r('app.float.size_12'))
           .margin({bottom: $r('app.float.size_8'),right: $r('app.float.size_8'),left: $r('app.float.size_8')})
+          .onClick(() => {
+            homeViewModel.jumpToWebContent(item.link,item.title)
+          })
         })
         ListItem() {
           RefreshFooter({ showFooter: this.showLoading,showEmpty: this.showEmpty})
@@ -37,7 +41,7 @@ export struct ListComponent {
       .onReachEnd(() => {
         if(!this.showEmpty) {
           this.showLoading = true
-          homeViewModel.getHomeArticle(false,(result) => {
+          this.onReachEnd((result) => {
             if(result.length == 0) {
               this.showEmpty = true
             } else {
@@ -48,7 +52,7 @@ export struct ListComponent {
       })
     }
     .onRefreshing(() => {
-      homeViewModel.getHomeArticle(true,(result) => {
+      this.onRefreshing((result) => {
         this.articleList = result
         this.refresh = false
         this.showLoading = false

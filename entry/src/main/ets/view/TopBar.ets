@@ -13,15 +13,17 @@ export struct CommonTopBar {
   build() {
     Column() {
       Stack({ alignContent: Alignment.Start }) {
-        Text(this.title)
-          .flexGrow(1)
-          .textAlign(this.titleAlignment)
-          .fontColor($r('app.color.color_black'))
-          .fontSize($r('app.float.size_text_16'))
-          .align(Alignment.Center)
-          .maxLines(1)
-          .width('100%')
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
+        Scroll() {
+          Text(this.title)
+            .flexGrow(1)
+            .textAlign(this.titleAlignment)
+            .fontColor($r('app.color.color_black'))
+            .fontSize($r('app.float.size_text_16'))
+            .align(Alignment.Center)
+            .maxLines(1)
+            .width('100%')
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+        }
 
         if (this.backButton) {
           Stack() {

@@ -1,9 +1,9 @@
-import { BarUtils } from '../utils/BarUtils'
-import showToast from '../utils/ToastUtils'
-import { CommonTopBar } from '../view/TopBar'
-import loginViewModel from '../viewmodel/LoginViewModel'
-@Entry
+import { BarUtils } from '../../utils/BarUtils'
+import showToast from '../../utils/ToastUtils'
+import { CommonTopBar } from '../../view/TopBar'
+import loginViewModel from '../../viewmodel/LoginViewModel'
 @Component
+@Entry
 struct LoginPage {
   @State nickName: string = ''
   @State passwd: string = ''
@@ -21,6 +21,8 @@ struct LoginPage {
         TextInput({placeholder:"输入用户名称"})
           .margin({bottom: $r('app.float.size_12')})
           .maxLength(10)
+          .fontSize($r('app.float.size_20'))
+          .padding({top: $r('app.float.size_15'),bottom: $r('app.float.size_15')})
           .enterKeyType(EnterKeyType.Next)
           .onChange((v) => {
             this.nickName = v
@@ -30,6 +32,7 @@ struct LoginPage {
           .margin({bottom: $r('app.float.size_30')})
           .type(InputType.Password)
           .maxLength(20)
+          .padding({top: $r('app.float.size_15'),bottom: $r('app.float.size_15')})
           .enterKeyType(EnterKeyType.Go)
           .onSubmit(() => {
             this.login()

@@ -4,6 +4,8 @@
 export class EventKeys {
   //展示loading的事件处理EventID
   static readonly LOADING_DIALOG_EVENT = 0x10000
+  static readonly ON_MAIN_PAGE_HIDE = 0x10001
+  static readonly ON_MAIN_PAGE_SHOW = 0x10002
 }
 
 /**
@@ -11,4 +13,12 @@ export class EventKeys {
  */
 export const loadingEvent = {
   eventId: EventKeys.LOADING_DIALOG_EVENT
+}
+
+export const mainPageShow = {
+  eventId: EventKeys.ON_MAIN_PAGE_SHOW,
+}
+
+export const mainPageHide = {
+  eventId: EventKeys.ON_MAIN_PAGE_HIDE,
 }
