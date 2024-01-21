@@ -108,10 +108,6 @@ export class HomeViewModel extends BaseViewModel{
         this.hotSearchKeys = result
       })
   }
-
-  toPage(url:string,params?:{}) {
-    Router.push(url,params)
-  }
 }
 
 let homeViewModel = new HomeViewModel();

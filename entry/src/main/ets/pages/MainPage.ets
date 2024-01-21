@@ -17,6 +17,9 @@ struct MainPage {
   @State loadingShow: boolean = false
   @State loadingTips: string = "加载中..."
 
+  @State cacheIndex:boolean[] = [true,false,false,false]
+
+
   loadingDialogController: CustomDialogController = new CustomDialogController({
     builder: LoadingDialog({ loadingTips: this.loadingTips }),
     autoCancel: false,
@@ -60,22 +63,30 @@ struct MainPage {
         barPosition: BarPosition.End,
       }) {
         TabContent() {
-          HomePage()
+          if(this.selectedIndex == 0 || this.cacheIndex[0]) {
+            HomePage()
+          }
         }
         .tabBar(this.TabBottom(mainViewModel.tabTitle[0], 0))
 
         TabContent() {
-          AuthorPage()
+          if(this.selectedIndex == 1 || this.cacheIndex[1]) {
+            AuthorPage()
+          }
         }
         .tabBar(this.TabBottom(mainViewModel.tabTitle[1], 1))
 
         TabContent() {
-          QuestionPage()
+          if(this.selectedIndex == 2 || this.cacheIndex[2]) {
+            QuestionPage()
+          }
         }
         .tabBar(this.TabBottom(mainViewModel.tabTitle[2], 2))
 
         TabContent() {
-          SquarePage()
+          if(this.selectedIndex == 3 || this.cacheIndex[3]) {
+            SquarePage()
+          }
         }
         .tabBar(this.TabBottom(mainViewModel.tabTitle[3], 3))
       }
@@ -84,6 +95,7 @@ struct MainPage {
       .scrollable(false)
       .barHeight($r('app.float.tab_bar_height'))
       .onChange((index: number) => {
+        this.cacheIndex[index] = true
         this.selectedIndex = index;
       })
     }.padding({top: BarUtils.getToolBarHeight()})

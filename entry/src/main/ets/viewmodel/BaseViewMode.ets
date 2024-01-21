@@ -36,6 +36,11 @@ export class BaseViewModel {
     autoCancel: false,
     gridCount: 2,
   })
+
+
+  toPage(url:string,params?:{}) {
+    Router.push(url,params)
+  }
 }
 
 let baseViewModel = new BaseViewModel()

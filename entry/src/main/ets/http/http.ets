@@ -57,6 +57,8 @@ const axiosClient = new AxiosHttpRequest({
       return err;
     },
     responseInterceptor: async (response) => {
+      hilog.debug(0x001,"iichen_tag",'%{public}s, %{public}s','网络请求Response 请求方法:', `${JsonUtils.stringify(response.data)}`);
+
       if(axiosClient.config.needStorageSessionId) {
         // 定义正则表达式模式
         const jsessionIdRegex = /JSESSIONID\s+([^\s]+)/;

@@ -20,7 +20,7 @@ export struct ListComponent {
   onRefreshing: (callback: ResultCallback) => void
 
   build() {
-    StateComponent({viewState: this.viewState,retryCallback: this.refreshArticle}) {
+    StateComponent({viewState: this.viewState,retryCallback: () => this.refreshArticle()}) {
       Refresh({refreshing: $$this.refresh}) {
         List() {
           ForEach(this.articleList,(item: Article,index:number) => {
@@ -57,7 +57,7 @@ export struct ListComponent {
           }
         })
       }
-      .onRefreshing(() => this.refreshArticle)
+      .onRefreshing(() => this.refreshArticle())
     }
   }
 
@@ -69,6 +69,7 @@ export struct ListComponent {
     this.onRefreshing((result) => {
       this.articleList = result
       this.refresh = false
+      this.showEmpty = false
       this.showLoading = false
     })
   }

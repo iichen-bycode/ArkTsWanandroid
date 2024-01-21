@@ -1,4 +1,5 @@
-import { search } from '../http/api';
+import { StorageKeys } from '../constants/StorageKeys';
+import { search, wxAuthorSearchArticleList } from '../http/api';
 import { HomeArticleModel } from '../model/HomeArticleModel';
 import { BaseViewModel, ResultCallback } from './BaseViewMode';
 export class SearchViewModel extends BaseViewModel {
@@ -8,7 +9,7 @@ export class SearchViewModel extends BaseViewModel {
    * 搜索
    * @param callback
    */
-  async search(isRefresh:boolean,key:string,callback: ResultCallback) {
+  async search(isRefresh:boolean,key:string,callback: ResultCallback,searchType:string,authorId:number) {
     if(isRefresh) {
       this.page = 0
       this.articleModel.over = false
@@ -17,7 +18,7 @@ export class SearchViewModel extends BaseViewModel {
       callback([])
     } else {
       await this.request()
-        .promise(search(this.page,key),isRefresh)
+        .promise(searchType == StorageKeys.SEARCH_TYPE_HOME ? search(this.page,key) : wxAuthorSearchArticleList(authorId,this.page,key),isRefresh)
         .then((result) => {
           ++this.page
           this.articleModel = result

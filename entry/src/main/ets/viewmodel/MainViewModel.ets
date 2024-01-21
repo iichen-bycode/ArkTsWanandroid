@@ -21,7 +21,7 @@ export class MainViewModel {
     },
     {
       index: 2,
-      title: "问答",
+      title: "项目",
       imageActivated: $r('app.media.icon_sel_hot'),
       imageOriginal: $r('app.media.icon_unsel_hot')
     },

@@ -37,7 +37,7 @@ export struct StateComponent {
             .fontSize($r('app.float.size_text_15'))
             .fontColor($r("app.color.color_666"))
             .margin($r('app.float.size_10'))
-            Button($r('app.string.page_show'))
+            Button($r('app.string.press_retry'))
               .width($r('app.float.size_120'))
               .height($r('app.float.size_35'))
               .backgroundColor($r('app.color.color_red'))

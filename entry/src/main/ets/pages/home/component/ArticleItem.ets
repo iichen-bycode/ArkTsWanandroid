@@ -58,7 +58,7 @@ export struct ArticleItem {
             .textAlign(TextAlign.Center)
             .margin({right: $r('app.float.size_8')})
         }
-        Text(`${this.article.niceShareDate}`)
+        Text(this.article.niceDate === '未知时间' ? `${this.article.niceDate}` : this.article.niceDate)
           .fontSize($r('app.float.size_text_14'),)
           .fontColor($r('app.color.color_999'))
       }

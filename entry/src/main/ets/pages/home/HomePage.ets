@@ -20,14 +20,14 @@ export struct HomePage {
         Image($r('app.media.app_icon')).height(25)
         Search({placeholder:this.searchKey})
           .onSubmit((v) => {
-            homeViewModel.toPage(RoutePath.SearchPage,{key:this.getSearchKey()})
+            homeViewModel.toPage(RoutePath.SearchPage,{key:this.getSearchKey})
           })
           .onChange((v) => {
             this.searchByUserKey = v
           })
           .width('70%')
         Text($r('app.string.search')).fontColor($r('app.color.color_red')).onClick(() => {
-          homeViewModel.toPage(RoutePath.SearchPage,{key:this.getSearchKey()})
+          homeViewModel.toPage(RoutePath.SearchPage,{key:this.getSearchKey})
         })
       }
       .width('100%')
@@ -68,7 +68,7 @@ export struct HomePage {
     .justifyContent(FlexAlign.Start)
   }
 
-  getSearchKey() : string{
+  getSearchKey() : string {
     return this.searchByUserKey === '' ? this.searchKey : this.searchByUserKey
   }
 
