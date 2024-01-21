@@ -1,10 +1,10 @@
 import emitter from '@ohos.events.emitter'
 import { StorageKeys } from '../constants/StorageKeys'
-import { mainPageShow } from '../event/EventKeys'
+import { EventKeys, loadingEvent, mainPageShow } from '../event/EventKeys'
 import { TabItem } from '../model/TabItem'
 import { BarUtils } from '../utils/BarUtils'
 import { StorageUtils } from '../utils/StorageUtils'
-import showToast from '../utils/ToastUtils'
+import { LoadingDialog } from '../view/LoadingDialog'
 import mainViewModel from '../viewmodel/MainViewModel'
 import { AuthorPage } from './anthor/AuthorPage'
 import { HomePage } from './home/HomePage'
@@ -14,16 +14,43 @@ import { SquarePage } from './square/Square'
 @Component
 struct MainPage {
   @State selectedIndex: number = 0
+  @State loadingShow: boolean = false
+  @State loadingTips: string = "加载中..."
 
-  onPageShow() {
-    emitter.emit(mainPageShow, {  })
-  }
+  loadingDialogController: CustomDialogController = new CustomDialogController({
+    builder: LoadingDialog({ loadingTips: this.loadingTips }),
+    autoCancel: false,
+    gridCount: 2,
+    cancel: () => {
+      this.loadingShow = false
+    }
+  })
 
   aboutToAppear() {
     // 框架支持cookie持久化后去除
     StorageUtils.get(StorageKeys.USER_INFO_KEY, '').then((v) => {
       mainViewModel.sessionId = v.toString()
     })
+
+    emitter.on(loadingEvent, (event) => {
+      if (event.data.showLoading == true && !this.loadingShow) {
+        this.loadingShow = true
+        this.loadingTips = event.data.loadingTips
+        this.loadingDialogController.open()
+      } else if (event.data.showLoading == false) {
+        this.loadingDialogController.close()
+        this.loadingShow = false
+      }
+    })
+  }
+
+  aboutToDisappear() {
+    this.loadingDialogController = null
+    emitter.off(EventKeys.LOADING_DIALOG_EVENT)
+  }
+
+  onPageShow() {
+    emitter.emit(mainPageShow, {  })
   }
 
   build() {

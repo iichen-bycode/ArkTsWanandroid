@@ -1,4 +1,5 @@
 import emitter from '@ohos.events.emitter'
+import { ViewStateConstant } from '../../constants/ViewStateConstant'
 import { mainPageShow } from '../../event/EventKeys'
 import { Banner } from '../../model/BannerModel'
 import { RoutePath } from '../../route/RoutePath'
@@ -9,6 +10,8 @@ import { ListComponent } from './component/ListComponent'
 export struct HomePage {
   @State bannerList: Banner[] = []
   @State searchKey:string = ''
+  @State searchByUserKey:string = ''
+  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING
 
   build() {
     Column() {
@@ -17,11 +20,14 @@ export struct HomePage {
         Image($r('app.media.app_icon')).height(25)
         Search({placeholder:this.searchKey})
           .onSubmit((v) => {
-            homeViewModel.toPage(RoutePath.SearchPage,{key:this.searchKey})
+            homeViewModel.toPage(RoutePath.SearchPage,{key:this.getSearchKey()})
+          })
+          .onChange((v) => {
+            this.searchByUserKey = v
           })
           .width('70%')
         Text($r('app.string.search')).fontColor($r('app.color.color_red')).onClick(() => {
-          homeViewModel.toPage(RoutePath.SearchPage,{key:this.searchKey})
+          homeViewModel.toPage(RoutePath.SearchPage,{key:this.getSearchKey()})
         })
       }
       .width('100%')
@@ -39,7 +45,7 @@ export struct HomePage {
       .index(0)
       .autoPlay(true)
       .interval(2500)
-      .indicator(true)
+      .indicator(this.bannerList.length > 1)
       .loop(this.bannerList.length > 1)
       .duration(400)
       .curve(Curve.Linear)
@@ -55,14 +61,22 @@ export struct HomePage {
       },onRefreshing:(callback:ResultCallback) => {
         homeViewModel.getHomeArticle(true,(result) => {
           callback(result)
-        })}
+        })},viewState:this.viewState
       })
     }
     .height('100%')
     .justifyContent(FlexAlign.Start)
   }
 
+  getSearchKey() : string{
+    return this.searchByUserKey === '' ? this.searchKey : this.searchByUserKey
+  }
+
   aboutToAppear() {
+    homeViewModel.observeState((state) => {
+      this.viewState = state
+    })
+
     homeViewModel.getHomeBanner((result) => {
       this.bannerList = result
     })
@@ -72,7 +86,9 @@ export struct HomePage {
     })
 
     emitter.on(mainPageShow,(_) => {
-      this.searchKey = homeViewModel.getHotSearchKey()
+      if(this.searchByUserKey === '') {
+        this.searchKey = homeViewModel.getHotSearchKey()
+      }
     })
   }
 }

@@ -17,7 +17,7 @@ export class SearchViewModel extends BaseViewModel {
       callback([])
     } else {
       await this.request()
-        .promise(search(this.page,key))
+        .promise(search(this.page,key),isRefresh)
         .then((result) => {
           ++this.page
           this.articleModel = result

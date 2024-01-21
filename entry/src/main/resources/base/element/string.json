@@ -17,6 +17,30 @@
       "value": "搜索"
     },
     {
+      "name": "press_retry",
+      "value": "重试"
+    },
+    {
+      "name": "loading",
+      "value": "加载中..."
+    },
+    {
+      "name": "load_error",
+      "value": "加载数据异常"
+    },
+    {
+      "name": "load_emtpy",
+      "value": "暂无数据"
+    },
+    {
+      "name": "load_success",
+      "value": "加载成功"
+    },
+    {
+      "name": "net_error",
+      "value": "网络错误"
+    },
+    {
       "name": "internet_reason_desc",
       "value": "获取数据需要网络权限。"
     }

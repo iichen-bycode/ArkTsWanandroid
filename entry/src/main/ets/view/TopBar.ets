@@ -6,6 +6,7 @@ import router from '@ohos.router'
 @Component
 export struct CommonTopBar {
   @Prop title: string
+  showLine: boolean = true
   private titleAlignment: TextAlign = TextAlign.Center
   private backButton: boolean = true
   private onBackClick?: () => void
@@ -42,6 +43,8 @@ export struct CommonTopBar {
       }
       .height($r('app.float.size_50'))
       .width("100%")
+      if(this.showLine)
+        Line().backgroundColor($r('app.color.divider')).width('100%').height($r('app.float.size_1'))
     }
 
   }

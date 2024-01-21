@@ -1,6 +1,7 @@
 import useRequestStatus from '../http/run'
 import { RoutePath } from '../route/RoutePath'
 import { Router } from '../route/Router'
+import { LoadingDialog } from '../view/LoadingDialog'
 export type StateCallback = (state: string) => void
 
 export type ResultCallback = (result: any) => void
@@ -17,7 +18,9 @@ export class BaseViewModel {
   }
 
   request(value?: {checkResult?: boolean,useSource?: boolean}) {
-    return useRequestStatus(state => this.dispatchViewState(state), value?.checkResult,value?.useSource)
+    return useRequestStatus(state => {
+      this.dispatchViewState(state)
+    }, value?.checkResult,value?.useSource)
   }
 
   jumpToWebContent(src:string,title:string) {
@@ -26,6 +29,13 @@ export class BaseViewModel {
       'title': title
     })
   }
+
+  loadingTips:string = '加载中...'
+  loadingDialogController: CustomDialogController = new CustomDialogController({
+    builder: LoadingDialog({ loadingTips: this.loadingTips }),
+    autoCancel: false,
+    gridCount: 2,
+  })
 }
 
 let baseViewModel = new BaseViewModel()

@@ -13,6 +13,31 @@ export struct ArticleItem {
     this.onChangeCollect()
   }
 
+  splitByEmTag(inputString: string): string[] {
+    // 使用正则表达式匹配 <em> 标签内的文本
+    const emMatches = inputString.split(/(<em[^>]*>.*?<\/em>)/);
+
+    // 过滤掉可能的空字符串
+    const nonEmptyMatches = emMatches.filter(Boolean);
+
+    // 创建结果数组
+    const resultArray: string[] = [];
+
+    // 根据 <em> 标签的存在与否组织数组
+    for (let i = 0; i < nonEmptyMatches.length; i++) {
+      if (nonEmptyMatches[i].startsWith("<em")) {
+        // 如果是 <em> 包裹的内容，创建新数组并放入结果数组
+        const innerEmContent = nonEmptyMatches[i].replace(/<\/?em[^>]*>/g, '');
+        resultArray.push("<em>"+innerEmContent);
+      } else {
+        // 如果不是 <em> 包裹的内容，直接放入结果数组
+        resultArray.push(nonEmptyMatches[i]);
+      }
+    }
+    return resultArray;
+  }
+
+
   build() {
     Column() {
       Row() {
@@ -39,9 +64,13 @@ export struct ArticleItem {
       }
       .justifyContent(FlexAlign.SpaceBetween)
       .width('100%')
-      Text(this.article.title)
-        .fontColor($r('app.color.color_333'))
-        .fontSize($r('app.float.size_text_16'),)
+      Text() {
+        ForEach(this.splitByEmTag(this.article.title),(title:string) => {
+          Span(title.includes("<em>") ? title.split("<em>")[1] : title)
+            .fontColor(title.includes("<em>") ? $r('app.color.color_red') : $r('app.color.color_333'))
+            .fontSize($r('app.float.size_text_16'),)
+        })
+      }
         .textOverflow({overflow: TextOverflow.Ellipsis})
         .maxLines(1).padding({right: $r('app.float.size_20')})
         .margin({top: $r('app.float.size_8')})

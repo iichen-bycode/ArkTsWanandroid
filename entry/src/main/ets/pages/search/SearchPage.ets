@@ -1,5 +1,7 @@
 import router from '@ohos.router'
+import { ViewStateConstant } from '../../constants/ViewStateConstant'
 import { BarUtils } from '../../utils/BarUtils'
+import { CommonTopBar } from '../../view/TopBar'
 import { ResultCallback } from '../../viewmodel/BaseViewMode'
 import searchViewModel from '../../viewmodel/SearchViewModel'
 import { ListComponent } from '../home/component/ListComponent'
@@ -7,9 +9,17 @@ import { ListComponent } from '../home/component/ListComponent'
 @Entry
 export struct SearchPage {
   @State searchKey:string = router.getParams()['key']
+  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING
+
+  aboutToAppear() {
+    searchViewModel.observeState((state) => {
+      this.viewState = state
+    })
+  }
 
   build() {
     Column(){
+      CommonTopBar({title:'搜索'})
       // 列表
       ListComponent({onReachEnd: (callback: ResultCallback) => {
         searchViewModel.search(false,this.searchKey,(result) => {
@@ -18,8 +28,8 @@ export struct SearchPage {
       },onRefreshing:(callback:ResultCallback) => {
         searchViewModel.search(true,this.searchKey,(result) => {
           callback(result)
-        })}
-    })
+        })},viewState: this.viewState
+    }).margin({top: $r('app.float.size_12'),right: $r('app.float.size_8'),left: $r('app.float.size_8')})
    }.padding({top: BarUtils.getToolBarHeight()})
   }
 }

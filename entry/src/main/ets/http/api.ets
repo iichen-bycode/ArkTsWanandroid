@@ -47,6 +47,7 @@ export function getHotTopArticle() {
 export function getHomeArticle(page: number) {
   return axiosClient.get<HomeArticleModel>({
     url: `article/list/${page}/json`,
+    showLoading: page === 0
   })
 }
 
@@ -113,7 +114,8 @@ export function login(params:{username:string,password:string}) {
  */
 export function search(page:number,key:string) {
   return axiosClient.post<HomeArticleModel>({
-    url: `article/query/${page}/json?k=${key}`
+    url: `article/query/${page}/json?k=${encodeURI(key)}`,
+    showLoading:page === 0
   })
 }
 

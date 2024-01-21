@@ -21,7 +21,7 @@ export class HomeViewModel extends BaseViewModel{
 
   async getHomeBanner(callback: ResultCallback) {
     await this.request()
-      .promise(getHomeBanner())
+      .promise(getHomeBanner(),false)
       .then((result) => {
         callback(result)
       })
@@ -42,10 +42,10 @@ export class HomeViewModel extends BaseViewModel{
       let hotTopArticle = []
       if(this.page == 0) {
         hotTopArticle = await this.request()
-          .promise(getHotTopArticle())
+          .promise(getHotTopArticle(),false)
       }
       await this.request()
-        .promise(getHomeArticle(this.page))
+        .promise(getHomeArticle(this.page),isRefresh)
         .then((result) => {
           ++this.page
           this.articleModel = result
@@ -103,7 +103,7 @@ export class HomeViewModel extends BaseViewModel{
    */
   async getHotSearchKeyArray() {
     await this.request()
-      .promise(getHotSearchKeys())
+      .promise(getHotSearchKeys(),false)
       .then((result) => {
         this.hotSearchKeys = result
       })
