@@ -3,6 +3,7 @@
     "pages/MainPage",
     "pages/WebPage",
     "pages/auth/LoginPage",
-    "pages/search/SearchPage"
+    "pages/search/SearchPage",
+    "pages/myself/rank/RankPage"
   ]
 }

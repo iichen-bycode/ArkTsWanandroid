@@ -13,19 +13,7 @@ export struct CommonTopBar {
 
   build() {
     Column() {
-      Stack({ alignContent: Alignment.Start }) {
-        Scroll() {
-          Text(this.title)
-            .flexGrow(1)
-            .textAlign(this.titleAlignment)
-            .fontColor($r('app.color.color_black'))
-            .fontSize($r('app.float.size_text_16'))
-            .align(Alignment.Center)
-            .maxLines(1)
-            .width('100%')
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-        }
-
+      Row() {
         if (this.backButton) {
           Stack() {
             Image($r('app.media.icon_back'))
@@ -39,6 +27,16 @@ export struct CommonTopBar {
           }
           .height($r('app.float.size_50'))
           .width($r('app.float.size_50'))
+        }
+
+        Scroll() {
+          Text(this.title)
+            .flexGrow(1)
+            .textAlign(this.titleAlignment)
+            .fontColor($r('app.color.color_black'))
+            .fontSize($r('app.float.size_text_16'))
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
         }
       }
       .height($r('app.float.size_50'))

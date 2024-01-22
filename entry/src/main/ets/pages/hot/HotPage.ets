@@ -1,5 +1,5 @@
 import { ViewStateConstant } from '../../constants/ViewStateConstant'
-import showToast from '../../utils/ToastUtils'
+import { BarUtils } from '../../utils/BarUtils'
 import { InputDialog, InputDialogConfig } from '../../view/InputDialog'
 import { ResultCallback } from '../../viewmodel/BaseViewMode'
 import squareViewModel from '../../viewmodel/SquareViewModel'
@@ -12,7 +12,7 @@ export struct HotPage {
   controller = new TabsController()
 
   @State squareViewState: string = ViewStateConstant.VIEW_STATE_LOADING
-  @State wendaViewState: string = ViewStateConstant.VIEW_STATE_LOADING
+  @State wendaViewState: string = ViewStateConstant.VIEW_STATE_SUCCESS
 
   private title: string[] = ['分享文章','提出问题']
   private submitTip: string[] = ['分享','提交']
@@ -53,7 +53,7 @@ export struct HotPage {
   @Builder tab(index: number, name: string) {
     Row() {
       Text(name)
-        .fontColor(this.currentIndex===index?$r('app.color.color_red'):$r('app.color.color_black'))
+        .fontColor(this.currentIndex===index?$r('app.color.color_theme'):$r('app.color.color_747c83'))
         .fontSize($r('app.float.size_18'))
         .onClick(()=>{
           this.controller.changeIndex(index)
@@ -107,14 +107,12 @@ export struct HotPage {
         this.currentIndex = index
       })
     }.width('100%').height('100%')
+    .padding({top: BarUtils.getToolBarHeight()})
   }
 
   aboutToAppear() {
     squareViewModel.observeState((state) => {
       this.squareViewState = state
-    })
-    wenDaViewModel.observeState((state) => {
-      this.wendaViewState = state
     })
   }
 }

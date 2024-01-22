@@ -13,7 +13,7 @@ export class WenDaViewModel extends BaseViewModel {
       callback([])
     } else {
       await this.request()
-        .promise(getWendaData(this.page),isRefresh)
+        .promise(getWendaData(this.page))
         .then((result) => {
           ++this.page
           this.articleModel = result

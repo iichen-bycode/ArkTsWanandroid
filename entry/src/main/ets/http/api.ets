@@ -7,6 +7,8 @@ import { Article } from '../model/ArticleModel'
 import { HotSearchKeysModel } from '../model/HotSearchKeyModel'
 import { CommonModel } from '../model/CommonModel'
 import { SystemModel } from '../model/SystemModel'
+import { UserInfoModel } from '../model/UserInfoModel'
+import { RankModel } from '../model/RankModel'
 /**
  * 请求首页Banner
  * @param date
@@ -260,6 +262,41 @@ export function askQuestion(content:string) {
       'articleId':8857,
       'content':content,
     }
+  })
+}
+
+/**
+ * 个人信息
+ * @param date
+ * @returns
+ */
+export function getUserInfo() {
+  return axiosClient.get<UserInfoModel>({
+    url: `lg/coin/userinfo/json`,
+    checkLoginState: true,
+  })
+}
+
+/**
+ * 未读消息数量
+ * @param date
+ * @returns
+ */
+export function getUnRead() {
+  return axiosClient.get<number>({
+    url: `message/lg/count_unread/json`,
+    checkLoginState: true,
+  })
+}
+
+/**
+ * 未读消息数量
+ * @param date
+ * @returns
+ */
+export function getRankList(page:number) {
+  return axiosClient.get<RankModel>({
+    url: `coin/rank/${page}/json`,
   })
 }
 

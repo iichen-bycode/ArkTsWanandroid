@@ -5,6 +5,8 @@ import { login } from '../http/api';
 import { StorageUtils } from '../utils/StorageUtils';
 import showToast from '../utils/ToastUtils';
 import { BaseViewModel } from './BaseViewMode';
+import emitter from '@ohos.events.emitter';
+import { loginIn } from '../event/EventKeys';
 
 export class LoginViewModel extends BaseViewModel{
   async login(params:{username:string,password:string}) {
@@ -14,6 +16,7 @@ export class LoginViewModel extends BaseViewModel{
         if(res.errorCode == 0) {
           await StorageUtils.put(StorageKeys.USER_LOGIN, true)
           showToast("登录成功！")
+          emitter.emit(loginIn,{})
           router.back()
         }
       })

@@ -62,8 +62,24 @@
       "value": "#FFF8F8F8"
     },
     {
+      "name": "color_f6f6f6",
+      "value": "#F6F6F6"
+    },
+    {
+      "name": "color_e0e0e0",
+      "value": "#E0E0E0"
+    },
+    {
+      "name": "color_747c83",
+      "value": "#747C83"
+    },
+    {
       "name": "color_red",
       "value": "#d81e06"
+    },
+    {
+      "name": "color_theme",
+      "value": "#0781FF"
     },
     {
       "name": "divider",

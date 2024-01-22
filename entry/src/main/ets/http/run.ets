@@ -1,7 +1,7 @@
 import axios from '@ohos/axios'
+import hilog from '@ohos.hilog'
 import { ViewStateConstant } from '../constants/ViewStateConstant'
 import { JsonUtils } from '../utils/JsonUtils'
-import showToast from '../utils/ToastUtils'
 type LoadStateResult = {
   promise: <T>(requestPromise: Promise<T>, showLoadingState?: boolean) => Promise<T>
 }
@@ -21,7 +21,7 @@ export interface ApiResponse<T = any> extends BaseResponse {
 
 const useRequestStatus = (stateCallback?: (state: string) => void, checkResult: boolean = false, useSource: boolean = false): LoadStateResult => {
 
-  function updateViewState(state: string, showLoadingState: boolean) {
+  function updateViewState(state: string, showLoadingState: boolean = false) {
     if(showLoadingState)
       stateCallback?.(state)
   }

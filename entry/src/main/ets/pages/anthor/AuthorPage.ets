@@ -2,11 +2,13 @@ import { StorageKeys } from '../../constants/StorageKeys'
 import { ViewStateConstant } from '../../constants/ViewStateConstant'
 import { CommonModel } from '../../model/CommonModel'
 import { RoutePath } from '../../route/RoutePath'
+import { BarUtils } from '../../utils/BarUtils'
 import showToast from '../../utils/ToastUtils'
 import authorViewModel from '../../viewmodel/AuthorViewModel'
 import { ResultCallback } from '../../viewmodel/BaseViewMode'
 import { ListComponent } from '../home/component/ListComponent'
 @Component
+@Preview
 export struct AuthorPage {
   @State currentIndex: number = 0
   @State searchKey:string = ''
@@ -36,7 +38,7 @@ export struct AuthorPage {
           .onChange((v) => {
             this.searchKey = v
           })
-      }
+      }.padding({ left: $r('app.float.size_10'), right: $r('app.float.size_10'),})
       Tabs() {
         ForEach(this.authorList,(author:CommonModel, index) => {
           //顶部导航栏内容
@@ -63,7 +65,7 @@ export struct AuthorPage {
       //设置导航栏（滚动）
       .barMode(BarMode.Scrollable)
     }.width('100%')
-    .padding({ left: $r('app.float.size_10'), right: $r('app.float.size_10') })
+    .padding({top: BarUtils.getToolBarHeight() })
   }
 
   aboutToAppear() {

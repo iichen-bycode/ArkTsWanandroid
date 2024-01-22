@@ -2,6 +2,7 @@ import emitter from '@ohos.events.emitter'
 import { ViewStateConstant } from '../../../constants/ViewStateConstant'
 import { loadingEvent } from '../../../event/EventKeys'
 import { Article } from '../../../model/ArticleModel'
+import { CommonPageModel } from '../../../model/CommonPageModel'
 import { RefreshFooter } from '../../../view/RefreshFooter'
 import { StateComponent } from '../../../view/ViewStateComponent'
 import { ResultCallback } from '../../../viewmodel/BaseViewMode'
@@ -10,7 +11,7 @@ import { ArticleItem } from './ArticleItem'
 
 @Component
 export struct ListComponent {
-  @State articleList: Article[] = []
+  @State articleList: CommonPageModel[] = []
   @State refresh:boolean = false
   @State showEmpty:boolean = false
   @State showLoading:boolean = false
@@ -27,7 +28,7 @@ export struct ListComponent {
             ListItem(){
               ArticleItem({article: item})
             }.shadow({
-              radius: $r('app.float.size_2'),
+              radius: $r('app.float.size_4'),
               offsetX: $r('app.float.size_1'),
               offsetY: $r('app.float.size_1'),
               color: $r('app.color.color_999')})

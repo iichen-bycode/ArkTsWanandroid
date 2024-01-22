@@ -3,6 +3,7 @@ import { ViewStateConstant } from '../../constants/ViewStateConstant'
 import { mainPageShow } from '../../event/EventKeys'
 import { Banner } from '../../model/BannerModel'
 import { RoutePath } from '../../route/RoutePath'
+import { BarUtils } from '../../utils/BarUtils'
 import { ResultCallback } from '../../viewmodel/BaseViewMode'
 import homeViewModel from '../../viewmodel/HomeViewModel'
 import { ListComponent } from './component/ListComponent'
@@ -66,6 +67,7 @@ export struct HomePage {
     }
     .height('100%')
     .justifyContent(FlexAlign.Start)
+    .padding({top: BarUtils.getToolBarHeight()})
   }
 
   getSearchKey() : string {

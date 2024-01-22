@@ -41,6 +41,16 @@ export class BaseViewModel {
   toPage(url:string,params?:{}) {
     Router.push(url,params)
   }
+
+  toPageDelay(url:string,extra?:{duration:number,params?:{}}) {
+    setTimeout(() => {
+      Router.push(url,extra?.params)
+    },extra?.duration || 1200)
+  }
+
+  logout() {
+
+  }
 }
 
 let baseViewModel = new BaseViewModel()

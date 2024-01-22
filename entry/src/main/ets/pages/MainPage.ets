@@ -98,7 +98,7 @@ struct MainPage {
         this.cacheIndex[index] = true
         this.selectedIndex = index;
       })
-    }.padding({top: BarUtils.getToolBarHeight()})
+    }
   }
 
   @Builder TabBottom(item: TabItem, index: number) {

@@ -1,4 +1,5 @@
-export class Article {
+import { CommonPageModel } from './CommonPageModel';
+export class Article extends CommonPageModel{
   adminAdd: boolean;
   apkLink: string;
   audit: number;
