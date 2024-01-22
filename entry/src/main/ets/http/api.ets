@@ -140,6 +140,7 @@ export function wxAuthorList() {
 export function wxAuthorArticleList(id:number,page:number) {
   return axiosClient.get<HomeArticleModel>({
     url: `wxarticle/list/${id}/${page}/json`,
+    showLoading:true
   })
 }
 
@@ -151,6 +152,7 @@ export function wxAuthorArticleList(id:number,page:number) {
 export function wxAuthorSearchArticleList(id:number,page:number,key:string) {
   return axiosClient.get<HomeArticleModel>({
     url: `wxarticle/list/${id}/${page}/json?k=${key}`,
+    showLoading:true
   })
 }
 
@@ -173,6 +175,7 @@ export function projectCategory() {
 export function projectCategoryItemList(cid:number,page:number) {
   return axiosClient.get<HomeArticleModel>({
     url: `project/list/${page}/json?cid=${cid}`,
+    showLoading:true
   })
 }
 
@@ -195,21 +198,71 @@ export function systemCategory() {
 export function systemCategoryItemList(cid:number,page:number) {
   return axiosClient.get<HomeArticleModel>({
     url: `article/list/${page}/json?cid=${cid}`,
+    showLoading:true
   })
 }
 
-/**********************************/
-
 /**
- * 体系分类下数据
+ * 广场数据
  * @param date
  * @returns
  */
-export function getWenDa(page:number) {
+export function getSquareData(page:number) {
   return axiosClient.get<HomeArticleModel>({
-    url: `wenda/list/${page}/json`,
+    url: `user_article/list/${page}/json`,
+    showLoading:true
   })
 }
+
+/**
+ * 问答数据
+ * @param date
+ * @returns
+ */
+export function getWendaData(page:number) {
+  return axiosClient.get<HomeArticleModel>({
+    url: `wenda/list/${page}/json`,
+    showLoading:true
+  })
+}
+
+/**
+ * 分享文章
+ * @param date
+ * @returns
+ */
+export function shareArticle(title:string,link:string) {
+  return axiosClient.post<any>({
+    url: `lg/user_article/add/json`,
+    checkResultCode:true,
+    needJumpToLogin:true,
+    checkLoginState:true,
+    params: {
+      'title':title,
+      'link':link,
+    }
+  })
+}
+
+
+/**
+ * 提出问答问题
+ * @param date
+ * @returns
+ */
+export function askQuestion(content:string) {
+  return axiosClient.post<any>({
+    url: `comment/lg/add`,
+    checkResultCode:true,
+    needJumpToLogin:true,
+    checkLoginState:true,
+    params: {
+      'articleId':8857,
+      'content':content,
+    }
+  })
+}
+
 
 
 

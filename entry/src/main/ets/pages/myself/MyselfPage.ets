@@ -1,6 +1,6 @@
 @Component
 @Entry
-export struct QuestionPage {
+export struct MyselfPage {
   build() {
 
   }

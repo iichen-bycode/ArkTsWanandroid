@@ -6,7 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@ohos/axios": "file:library"
+    "@ohos/axios": "file:library",
   },
   "devDependencies": {}
 }

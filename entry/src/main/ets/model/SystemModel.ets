@@ -1,5 +1,5 @@
-      export class SystemModel {
-        name:string;
-        id:number;
-        children:SystemModel[]
-      }
+export class SystemModel {
+  name:string;
+  id:number;
+  children:SystemModel[]
+}

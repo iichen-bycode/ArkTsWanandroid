@@ -21,13 +21,14 @@ export interface ApiResponse<T = any> extends BaseResponse {
 
 const useRequestStatus = (stateCallback?: (state: string) => void, checkResult: boolean = false, useSource: boolean = false): LoadStateResult => {
 
-  function updateViewState(state: string) {
-    stateCallback?.(state)
+  function updateViewState(state: string, showLoadingState: boolean) {
+    if(showLoadingState)
+      stateCallback?.(state)
   }
 
   function run<T>(requestPromise: Promise<T>, showLoadingState: boolean): Promise<T> {
     if (showLoadingState !== false) {
-      updateViewState(ViewStateConstant.VIEW_STATE_LOADING)
+      updateViewState(ViewStateConstant.VIEW_STATE_LOADING,showLoadingState)
     }
     return new Promise<T>((resolve, reject) => {
       requestPromise.then((res) => {
@@ -35,21 +36,21 @@ const useRequestStatus = (stateCallback?: (state: string) => void, checkResult: 
         const resultData = result.data;
         if (checkResult) {
           if (result.errorCode !== 0) {
-            updateViewState(ViewStateConstant.VIEW_STATE_ERROR)
+            updateViewState(ViewStateConstant.VIEW_STATE_ERROR,showLoadingState)
           } else if (Array.isArray(resultData) && resultData.length === 0) {
-            updateViewState(ViewStateConstant.VIEW_STATE_EMPTY)
+            updateViewState(ViewStateConstant.VIEW_STATE_EMPTY,showLoadingState)
           } else {
-            updateViewState(ViewStateConstant.VIEW_STATE_SUCCESS)
+            updateViewState(ViewStateConstant.VIEW_STATE_SUCCESS,showLoadingState)
           }
         } else {
-          updateViewState(ViewStateConstant.VIEW_STATE_SUCCESS)
+          updateViewState(ViewStateConstant.VIEW_STATE_SUCCESS,showLoadingState)
         }
         resolve(useSource ? res: resultData);
       }).catch((error) => {
         if (axios.isAxiosError(error)) {
-          updateViewState(ViewStateConstant.VIEW_STATE_NETWORK_ERROR)
+          updateViewState(ViewStateConstant.VIEW_STATE_NETWORK_ERROR,showLoadingState)
         } else {
-          updateViewState(ViewStateConstant.VIEW_STATE_ERROR)
+          updateViewState(ViewStateConstant.VIEW_STATE_ERROR,showLoadingState)
         }
         reject(error);
       })

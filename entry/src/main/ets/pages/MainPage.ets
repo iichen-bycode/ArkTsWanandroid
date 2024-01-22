@@ -8,8 +8,8 @@ import { LoadingDialog } from '../view/LoadingDialog'
 import mainViewModel from '../viewmodel/MainViewModel'
 import { AuthorPage } from './anthor/AuthorPage'
 import { HomePage } from './home/HomePage'
-import { QuestionPage } from './question/Question'
-import { SquarePage } from './square/Square'
+import { HotPage } from './hot/HotPage'
+import { MyselfPage } from './myself/MyselfPage'
 @Entry
 @Component
 struct MainPage {
@@ -78,14 +78,14 @@ struct MainPage {
 
         TabContent() {
           if(this.selectedIndex == 2 || this.cacheIndex[2]) {
-            QuestionPage()
+            HotPage()
           }
         }
         .tabBar(this.TabBottom(mainViewModel.tabTitle[2], 2))
 
         TabContent() {
           if(this.selectedIndex == 3 || this.cacheIndex[3]) {
-            SquarePage()
+            MyselfPage()
           }
         }
         .tabBar(this.TabBottom(mainViewModel.tabTitle[3], 3))
