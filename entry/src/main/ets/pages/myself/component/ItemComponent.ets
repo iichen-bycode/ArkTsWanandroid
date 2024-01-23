@@ -75,7 +75,7 @@ export struct ItemComponent {
               this.toJump('');
             }break;
             case 1: {
-              this.toJump('');
+              this.toJump(RoutePath.CollectPage);
             }break;
             case 2: {
 
@@ -101,7 +101,7 @@ export struct ItemComponent {
         Router.push(RoutePath.LoginPage)
       },1200)
     } else {
-
+      Router.push(router)
     }
   }
 }

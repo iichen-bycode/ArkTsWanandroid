@@ -1,8 +1,6 @@
-import emitter from '@ohos.events.emitter'
-import { ViewStateConstant } from '../../../constants/ViewStateConstant'
-import { loadingEvent } from '../../../event/EventKeys'
 import { Article } from '../../../model/ArticleModel'
 import { CommonPageModel } from '../../../model/CommonPageModel'
+import { ComponentRef } from '../../../utils/ComponentRef'
 import { RefreshFooter } from '../../../view/RefreshFooter'
 import { StateComponent } from '../../../view/ViewStateComponent'
 import { ResultCallback } from '../../../viewmodel/BaseViewMode'
@@ -17,16 +15,23 @@ export struct ListComponent {
   @State showLoading:boolean = false
   @Prop viewState: string
 
+  // 外部回调调用组件方法
+  ref: ComponentRef<{ change: (Article) => {} }>
+
+  scroller?: Scroller
+
   onReachEnd: (callback: ResultCallback) => void
   onRefreshing: (callback: ResultCallback) => void
+
+  isCollectList:boolean = false
 
   build() {
     StateComponent({viewState: this.viewState,retryCallback: () => this.refreshArticle()}) {
       Refresh({refreshing: $$this.refresh}) {
-        List() {
+        List({scroller:this.scroller}) {
           ForEach(this.articleList,(item: Article,index:number) => {
             ListItem(){
-              ArticleItem({article: item})
+              ArticleItem({article: item,isCollectList:this.isCollectList})
             }.shadow({
               radius: $r('app.float.size_4'),
               offsetX: $r('app.float.size_1'),
@@ -64,6 +69,13 @@ export struct ListComponent {
 
   aboutToAppear() {
     this.refreshArticle()
+    this.ref?.export(this.hook())
+  }
+
+  hook() {
+    return {
+      change: (article) => this.articleList = [article,...this.articleList]
+    }
   }
 
   refreshArticle() {

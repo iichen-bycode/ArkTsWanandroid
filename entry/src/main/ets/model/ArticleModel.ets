@@ -15,6 +15,7 @@ export class Article extends CommonPageModel{
   fresh: boolean;
   host: string;
   id: number;
+  originId: number;
   isAdminAdd: boolean;
   link: string;
   niceDate: string;

@@ -1,7 +1,7 @@
 import router from '@ohos.router'
+import { StorageKeys } from '../../constants/StorageKeys'
 import { ViewStateConstant } from '../../constants/ViewStateConstant'
 import { BarUtils } from '../../utils/BarUtils'
-import showToast from '../../utils/ToastUtils'
 import { CommonTopBar } from '../../view/TopBar'
 import { ResultCallback } from '../../viewmodel/BaseViewMode'
 import searchViewModel from '../../viewmodel/SearchViewModel'
@@ -13,7 +13,7 @@ export struct SearchPage {
   @State searchKey:string = router.getParams()['key']
   @State authorId:number = router.getParams()['author_id']
   @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING
-  @State searchType: string = router.getParams()['search_type']
+  @State searchType: string = router.getParams()['search_type'] || StorageKeys.SEARCH_TYPE_HOME
 
   aboutToAppear() {
     searchViewModel.observeState((state) => {

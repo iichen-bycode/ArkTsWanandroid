@@ -89,9 +89,12 @@ export function unCollectArticle(id: number) {
  * @param date
  * @returns
  */
-export function uhCollectListArticle(id: number) {
+export function unCollectListArticle(id: number,originId:number) {
   return axiosClient.post<any>({
     url: `lg/uncollect/${id}/json`,
+    params: {
+      originId:originId || -1
+    },
     checkResultCode: true,
     checkLoginState: true,
     needJumpToLogin: true
@@ -297,6 +300,35 @@ export function getUnRead() {
 export function getRankList(page:number) {
   return axiosClient.get<RankModel>({
     url: `coin/rank/${page}/json`,
+  })
+}
+
+/**
+ * 收藏列表
+ * @param date
+ * @returns
+ */
+export function getCollectList(page:number) {
+  return axiosClient.get<HomeArticleModel>({
+    url: `lg/collect/list/${page}/json`,
+  })
+}
+
+/**
+ * 新增收藏
+ * @param date
+ * @returns
+ */
+export function addCollect(params: {
+  title:string,author:string,link:string
+}) {
+  return axiosClient.post<Article>({
+    url: `lg/collect/add/json`,
+    params:params,
+    checkResultCode:true,
+    needJumpToLogin:true,
+    showLoading:true,
+    checkLoginState:true
   })
 }
 

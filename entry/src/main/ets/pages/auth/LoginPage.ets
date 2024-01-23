@@ -43,7 +43,9 @@ struct LoginPage {
 
         Button("登录").onClick(() => {
           this.login()
-        }).width('40%')
+        })
+          .width('60%')
+          .enabled(this.nickName.trim() != '' && this.passwd.trim() != '')
       }.margin($r('app.float.size_12'))
     }
     .padding({top: BarUtils.getToolBarHeight()})

@@ -61,9 +61,7 @@ export struct MyselfPage {
             .fontColor($r('app.color.color_f5f5f5'))
             .fontSize($r('app.float.size_12'))
         }
-
         ItemComponent({unRead: this.unRead }).margin({top: $r('app.float.size_50')})
-
       }
       .padding($r('app.float.size_12'))
       .width('100%').height('100%')

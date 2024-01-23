@@ -4,6 +4,7 @@
     "pages/WebPage",
     "pages/auth/LoginPage",
     "pages/search/SearchPage",
-    "pages/myself/rank/RankPage"
+    "pages/myself/rank/RankPage",
+    "pages/myself/collect/CollectPage"
   ]
 }

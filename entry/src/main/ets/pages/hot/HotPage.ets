@@ -18,11 +18,11 @@ export struct HotPage {
   private submitTip: string[] = ['分享','提交']
   private inputConfig:InputDialogConfig[][] = [
     [
-      new InputDialogConfig("文章标题"),
-      new InputDialogConfig("文章链接")
+      new InputDialogConfig("文章标题(必填)",true),
+      new InputDialogConfig("文章链接(必填)",true)
     ],
     [
-      new InputDialogConfig("问题描述"),
+      new InputDialogConfig("问题描述(必填)",true),
     ],
   ]
 

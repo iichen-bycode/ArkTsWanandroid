@@ -1,7 +1,6 @@
-import { collectArticle, getHomeArticle, getHomeBanner, getHotSearchKeys, getHotTopArticle, search, unCollectArticle } from '../http/api';
+import { collectArticle, getHomeArticle, getHomeBanner, getHotSearchKeys, getHotTopArticle, unCollectArticle, unCollectListArticle } from '../http/api';
 import { HomeArticleModel } from '../model/HomeArticleModel';
 import { HotSearchKeysModel } from '../model/HotSearchKeyModel';
-import { Router } from '../route/Router';
 import showToast from '../utils/ToastUtils';
 import { BaseViewModel, ResultCallback } from './BaseViewMode';
 
@@ -73,9 +72,9 @@ export class HomeViewModel extends BaseViewModel{
    * 取消收藏文章
    * @param callback
    */
-  async unCollectArticle(id:number,callback: ResultCallback) {
+  async unCollectArticle(id:number,callback: ResultCallback,extra?: {isCollectList:boolean,originId:number}) {
     await this.request({useSource: true})
-      .promise(unCollectArticle(id))
+      .promise((extra?.isCollectList || false) ? unCollectListArticle(id,extra?.originId) :unCollectArticle(id))
       .then((res) => {
         if(res.errorCode == 0) {
           callback(true)
@@ -83,7 +82,6 @@ export class HomeViewModel extends BaseViewModel{
         }
       })
   }
-
 
   hotSearchKeyIndex:number = 0
   getHotSearchKey() : string {

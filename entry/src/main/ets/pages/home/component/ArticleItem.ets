@@ -3,6 +3,7 @@ import homeViewModel from '../../../viewmodel/HomeViewModel'
 @Component
 export struct ArticleItem {
   @State article:Article = new Article()
+  isCollectList:boolean = false
   @State icon:Resource = $r('app.media.icon_unfavorite')
 
   onChangeCollect() : Resource{
@@ -42,7 +43,7 @@ export struct ArticleItem {
     Column() {
       Row() {
         Row() {
-          ForEach(this.article.tags,(tag:Tags, index:number) => {
+          ForEach(this.article.tags ||  [],(tag:Tags, index:number) => {
             Text(tag.name)
               .fontSize($r('app.float.size_text_14'),)
               .fontColor(homeViewModel.tagColor[index % homeViewModel.tagColor.length])
@@ -52,13 +53,13 @@ export struct ArticleItem {
               .padding($r('app.float.size_2'))
               .margin({right: $r('app.float.size_5')})
           })
-          Text(`${this.article.author == '' ? this.article.shareUser : this.article.author}`)
+          Text(`${(this.article.author == '' ? this.article.shareUser : this.article.author) || '匿名'}`)
             .fontSize($r('app.float.size_text_14'),)
             .fontColor($r('app.color.color_999'))
             .textAlign(TextAlign.Center)
             .margin({right: $r('app.float.size_8')})
         }
-        Text(this.article.niceDate === '未知时间' ? `${this.article.niceDate}` : this.article.niceDate)
+        Text(this.article.niceDate === '未知时间' ? `${this.article.niceShareDate}` : this.article.niceDate)
           .fontSize($r('app.float.size_text_14'),)
           .fontColor($r('app.color.color_999'))
       }
@@ -75,9 +76,16 @@ export struct ArticleItem {
         .maxLines(1).padding({right: $r('app.float.size_20')})
         .margin({top: $r('app.float.size_8')})
       Row() {
-        Text(`分类：${this.article.superChapterName}/${this.article.chapterName}`)
-          .fontSize($r('app.float.size_text_14'),)
-          .fontColor($r('app.color.color_999'))
+        Text() {
+          if(this.article.superChapterName != undefined) {
+            Span(`分类：${this.article.superChapterName}/`)
+              .fontSize($r('app.float.size_text_14'),)
+              .fontColor($r('app.color.color_999'))
+          }
+          Span(`${this.article.chapterName}`)
+            .fontSize($r('app.float.size_text_14'),)
+            .fontColor($r('app.color.color_999'))
+        }
         Image(this.icon)
           .width($r('app.float.size_20'))
           .height($r('app.float.size_20'))
@@ -86,9 +94,14 @@ export struct ArticleItem {
             homeViewModel.unCollectArticle(this.article.id,(res) => {
               this.article.collect = false
               this.onChangeCollect()
+            },{
+              isCollectList:this.isCollectList,
+              originId:this.article.originId
             })
           } else {
-            homeViewModel.collectArticle(this.article.id,(res) => {
+            homeViewModel.collectArticle(
+                (this.article.originId !== undefined && this.article.originId !== -1) ? this.article.originId : this.article.id
+              ,(res) => {
               this.article.collect = true
               this.onChangeCollect()
             })

@@ -2,6 +2,9 @@
  * 自定义App顶部Topbar
  */
 import router from '@ohos.router'
+import showToast from '../utils/ToastUtils'
+
+@Builder function empty(){}
 
 @Component
 export struct CommonTopBar {
@@ -10,6 +13,9 @@ export struct CommonTopBar {
   private titleAlignment: TextAlign = TextAlign.Center
   private backButton: boolean = true
   private onBackClick?: () => void
+  private onCallClick?: () => void
+
+  @BuilderParam endComponent: () => void = empty
 
   build() {
     Column() {
@@ -20,25 +26,30 @@ export struct CommonTopBar {
               .height($r('app.float.size_16'))
               .width($r('app.float.size_16'))
               .align(Alignment.Center)
-              .onClick(() => {
-                this.onBackClick?.()
-                router.back();
-              })
           }
           .height($r('app.float.size_50'))
           .width($r('app.float.size_50'))
+          .onClick(() => {
+            this.onBackClick?.()
+            router.back();
+          })
         }
 
-        Scroll() {
-          Text(this.title)
-            .flexGrow(1)
-            .textAlign(this.titleAlignment)
-            .fontColor($r('app.color.color_black'))
-            .fontSize($r('app.float.size_text_16'))
-            .maxLines(1)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-        }
+        Row() {
+          Scroll() {
+            Text(this.title)
+              .textAlign(this.titleAlignment)
+              .fontColor($r('app.color.color_black'))
+              .fontSize($r('app.float.size_text_16'))
+              .maxLines(1)
+              .textOverflow({ overflow: TextOverflow.Ellipsis })
+          }
+          this.endComponent()
+        }.justifyContent(FlexAlign.SpaceBetween).flexGrow(1)
       }
+      .onClick(() => {
+        this.onCallClick?.()
+      })
       .height($r('app.float.size_50'))
       .width("100%")
       if(this.showLine)
