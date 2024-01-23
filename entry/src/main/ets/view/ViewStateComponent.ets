@@ -11,13 +11,13 @@ export struct StateComponent {
   private showSkeleton: boolean = false
 
   build() {
-    Stack() {
+    Column() {
       if (this.viewState != ViewStateConstant.VIEW_STATE_SUCCESS) {
         this.holdContent()
       } else {
         this.viewContent()
       }
-    }
+    }.height('100%')
   }
 
   /**

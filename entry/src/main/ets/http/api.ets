@@ -193,6 +193,7 @@ export function projectCategoryItemList(cid:number,page:number) {
 export function systemCategory() {
   return axiosClient.get<SystemModel[]>({
     url: `tree/json`,
+    showLoading:true
   })
 }
 
@@ -204,7 +205,7 @@ export function systemCategory() {
 export function systemCategoryItemList(cid:number,page:number) {
   return axiosClient.get<HomeArticleModel>({
     url: `article/list/${page}/json?cid=${cid}`,
-    showLoading:true
+    showLoading:page == 0
   })
 }
 
@@ -216,7 +217,6 @@ export function systemCategoryItemList(cid:number,page:number) {
 export function getSquareData(page:number) {
   return axiosClient.get<HomeArticleModel>({
     url: `user_article/list/${page}/json`,
-    showLoading:true
   })
 }
 
