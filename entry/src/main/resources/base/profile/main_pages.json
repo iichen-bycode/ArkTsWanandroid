@@ -6,6 +6,9 @@
     "pages/search/SearchPage",
     "pages/myself/rank/RankPage",
     "pages/myself/collect/CollectPage",
-    "pages/myself/message/MessagePage"
+    "pages/myself/message/MessagePage",
+    "pages/myself/project/ProjectPage",
+    "pages/myself/system/SystemCategoryPage",
+    "pages/myself/system/SystemPage"
   ]
 }

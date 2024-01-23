@@ -76,10 +76,10 @@ export struct ItemComponent {
               this.toJump(RoutePath.CollectPage);
             }break;
             case 2: {
-
+              Router.push(RoutePath.SystemCategoryPage);
             }break;
             case 3: {
-
+              Router.push(RoutePath.ProjectPage);
             }break;
             case 4: {
               if(this.userInfoModel.userId !== undefined) {

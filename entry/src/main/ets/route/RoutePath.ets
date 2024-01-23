@@ -8,4 +8,7 @@ export class RoutePath {
   static readonly RankPage = "pages/myself/rank/RankPage"
   static readonly CollectPage = "pages/myself/collect/CollectPage"
   static readonly MessagePage = "pages/myself/message/MessagePage"
+  static readonly ProjectPage = "pages/myself/project/ProjectPage"
+  static readonly SystemCategoryPage = "pages/myself/system/SystemCategoryPage"
+  static readonly SystemPage = "pages/myself/system/SystemPage"
 }

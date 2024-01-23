@@ -181,7 +181,7 @@ export function projectCategory() {
 export function projectCategoryItemList(cid:number,page:number) {
   return axiosClient.get<HomeArticleModel>({
     url: `project/list/${page}/json?cid=${cid}`,
-    showLoading:true
+    showLoading:page == 0
   })
 }
 

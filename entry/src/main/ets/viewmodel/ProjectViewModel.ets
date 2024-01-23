@@ -1,10 +1,10 @@
-import { wxAuthorArticleList, wxAuthorList, wxAuthorSearchArticleList } from '../http/api';
+import { projectCategory, projectCategoryItemList } from '../http/api';
 import { HomeArticleModel } from '../model/HomeArticleModel';
 import { BaseViewModel, ResultCallback } from './BaseViewMode';
-export class AuthorViewModel extends BaseViewModel {
-  async wxAuthorList(callback: ResultCallback) {
+export class ProjectViewModel extends BaseViewModel {
+  async projectCategory(callback: ResultCallback) {
     await this.request()
-      .promise(wxAuthorList(),false)
+      .promise(projectCategory(),false)
       .then((res) => {
         callback(res)
       })
@@ -12,7 +12,7 @@ export class AuthorViewModel extends BaseViewModel {
 
   private page:number = 0
   private articleModel: HomeArticleModel = new HomeArticleModel()
-  async wxAuthorArticleList(isRefresh:boolean,id:number,callback: ResultCallback) {
+  async projectCategoryItemList(isRefresh:boolean,id:number,callback: ResultCallback) {
     if(isRefresh) {
       this.page = 0
       this.articleModel.over = false
@@ -21,7 +21,7 @@ export class AuthorViewModel extends BaseViewModel {
       callback([])
     } else {
       await this.request()
-        .promise(wxAuthorArticleList(id,this.page),isRefresh)
+        .promise(projectCategoryItemList(id,this.page),isRefresh)
         .then((result) => {
           ++this.page
           this.articleModel = result
@@ -31,5 +31,5 @@ export class AuthorViewModel extends BaseViewModel {
   }
 }
 
-let authorViewModel = new AuthorViewModel()
-export default authorViewModel as AuthorViewModel
+let projectViewModel = new ProjectViewModel()
+export default projectViewModel as ProjectViewModel
