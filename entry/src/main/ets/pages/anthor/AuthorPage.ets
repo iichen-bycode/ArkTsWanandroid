@@ -6,6 +6,7 @@ import { BarUtils } from '../../utils/BarUtils'
 import showToast from '../../utils/ToastUtils'
 import authorViewModel from '../../viewmodel/AuthorViewModel'
 import { ResultCallback } from '../../viewmodel/BaseViewMode'
+import { ArticleItem } from '../home/component/ArticleItem'
 import { ListComponent } from '../home/component/ListComponent'
 @Component
 @Preview
@@ -51,7 +52,8 @@ export struct AuthorPage {
               },onRefreshing:(callback:ResultCallback) => {
                 authorViewModel.wxAuthorArticleList(true,this.authorList[index].id,(result) => {
                   callback(result)
-                })},viewState: this.viewState
+                })},viewState: this.viewState,
+                itemComponent:(item) => this.itemBuild(item)
               })
             }
           }.tabBar(author.name)
@@ -66,6 +68,10 @@ export struct AuthorPage {
       .barMode(BarMode.Scrollable)
     }.width('100%')
     .padding({top: BarUtils.getToolBarHeight() })
+  }
+
+  @Builder itemBuild(item:any) {
+    ArticleItem({article: item})
   }
 
   aboutToAppear() {

@@ -7,9 +7,11 @@ import { ResultCallback } from '../../../viewmodel/BaseViewMode'
 import homeViewModel from '../../../viewmodel/HomeViewModel'
 import { ArticleItem } from './ArticleItem'
 
+@Builder function empty(){}
+
 @Component
 export struct ListComponent {
-  @State articleList: CommonPageModel[] = []
+  @State modelList: CommonPageModel[] = []
   @State refresh:boolean = false
   @State showEmpty:boolean = false
   @State showLoading:boolean = false
@@ -23,15 +25,16 @@ export struct ListComponent {
   onReachEnd: (callback: ResultCallback) => void
   onRefreshing: (callback: ResultCallback) => void
 
-  isCollectList:boolean = false
+  @Builder itemBuild(model: any,index:number) {}
+  @BuilderParam itemComponent: (model: any,index:number) => void = this.itemBuild
 
   build() {
     StateComponent({viewState: this.viewState,retryCallback: () => this.refreshArticle()}) {
       Refresh({refreshing: $$this.refresh}) {
         List({scroller:this.scroller}) {
-          ForEach(this.articleList,(item: Article,index:number) => {
+          ForEach(this.modelList,(item,index) => {
             ListItem(){
-              ArticleItem({article: item,isCollectList:this.isCollectList})
+              this.itemComponent(item,index)
             }.shadow({
               radius: $r('app.float.size_4'),
               offsetX: $r('app.float.size_1'),
@@ -57,7 +60,7 @@ export struct ListComponent {
               if(result.length == 0) {
                 this.showEmpty = true
               } else {
-                this.articleList = [...this.articleList,...result]
+                this.modelList = [...this.modelList,...result]
               }
             })
           }
@@ -74,13 +77,13 @@ export struct ListComponent {
 
   hook() {
     return {
-      change: (article) => this.articleList = [article,...this.articleList]
+      change: (article) => this.modelList = [article,...this.modelList]
     }
   }
 
   refreshArticle() {
     this.onRefreshing((result) => {
-      this.articleList = result
+      this.modelList = result
       this.refresh = false
       this.showEmpty = false
       this.showLoading = false

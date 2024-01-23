@@ -1,3 +1,4 @@
+import { CommonModel } from './CommonModel';
 import { CommonPageModel } from './CommonPageModel';
 export class Article extends CommonPageModel{
   adminAdd: boolean;

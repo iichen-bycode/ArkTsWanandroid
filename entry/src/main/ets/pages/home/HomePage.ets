@@ -6,6 +6,7 @@ import { RoutePath } from '../../route/RoutePath'
 import { BarUtils } from '../../utils/BarUtils'
 import { ResultCallback } from '../../viewmodel/BaseViewMode'
 import homeViewModel from '../../viewmodel/HomeViewModel'
+import { ArticleItem } from './component/ArticleItem'
 import { ListComponent } from './component/ListComponent'
 @Component
 export struct HomePage {
@@ -62,12 +63,17 @@ export struct HomePage {
       },onRefreshing:(callback:ResultCallback) => {
         homeViewModel.getHomeArticle(true,(result) => {
           callback(result)
-        })},viewState:this.viewState
+        })},viewState:this.viewState,
+        itemComponent:(item) => this.itemBuild(item)
       })
     }
     .height('100%')
     .justifyContent(FlexAlign.Start)
     .padding({top: BarUtils.getToolBarHeight()})
+  }
+
+  @Builder itemBuild(item:any) {
+    ArticleItem({article: item})
   }
 
   getSearchKey() : string {

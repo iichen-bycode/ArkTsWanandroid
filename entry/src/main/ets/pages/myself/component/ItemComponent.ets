@@ -1,5 +1,3 @@
-import emitter from '@ohos.events.emitter'
-import { loginOut } from '../../../event/EventKeys'
 import { UserInfoModel } from '../../../model/UserInfoModel'
 import { RoutePath } from '../../../route/RoutePath'
 import { Router } from '../../../route/Router'
@@ -72,7 +70,7 @@ export struct ItemComponent {
         .onClick(() => {
           switch (index) {
             case 0: {
-              this.toJump('');
+              this.toJump(RoutePath.MessagePage);
             }break;
             case 1: {
               this.toJump(RoutePath.CollectPage);

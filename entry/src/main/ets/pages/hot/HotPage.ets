@@ -4,6 +4,7 @@ import { InputDialog, InputDialogConfig } from '../../view/InputDialog'
 import { ResultCallback } from '../../viewmodel/BaseViewMode'
 import squareViewModel from '../../viewmodel/SquareViewModel'
 import wenDaViewModel from '../../viewmodel/WendaViewModel'
+import { ArticleItem } from '../home/component/ArticleItem'
 import { ListComponent } from '../home/component/ListComponent'
 @Component
 @Entry
@@ -85,7 +86,7 @@ export struct HotPage {
           },onRefreshing:(callback:ResultCallback) => {
             squareViewModel.getSquareData(true,(result) => {
               callback(result)
-            })},viewState: this.squareViewState
+            })},viewState: this.squareViewState,itemComponent:(item) => this.itemBuild(item)
           })
         }
         TabContent() {
@@ -96,7 +97,7 @@ export struct HotPage {
           },onRefreshing:(callback:ResultCallback) => {
             wenDaViewModel.getWendaData(true,(result) => {
               callback(result)
-            })},viewState: this.wendaViewState
+            })},viewState: this.wendaViewState,itemComponent:(item) => this.itemBuild(item)
           })
         }
       }
@@ -109,6 +110,11 @@ export struct HotPage {
     }.width('100%').height('100%')
     .padding({top: BarUtils.getToolBarHeight()})
   }
+
+  @Builder itemBuild(item:any) {
+    ArticleItem({article: item})
+  }
+
 
   aboutToAppear() {
     squareViewModel.observeState((state) => {

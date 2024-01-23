@@ -54,3 +54,53 @@
     git config --global --unset http.proxy
     git config --global --unset https.proxy
 
+
+# 分页模板代码
+```
+    import { ViewStateConstant } from '../../../constants/ViewStateConstant'
+    import { BarUtils } from '../../../utils/BarUtils'
+    import { CommonTopBar } from '../../../view/TopBar'
+    import { ResultCallback } from '../../../viewmodel/BaseViewMode'
+    import messageViewModel from '../../../viewmodel/MessageViewModel'
+    import { ListComponent } from '../../home/component/ListComponent'
+    @Entry
+    @Component
+    struct MessagePage {
+      @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING
+      private scroller: Scroller = new Scroller()
+    
+      build() {
+        Column() {
+          CommonTopBar({title:"我的收藏",onCallClick: () => {
+            this.scroller.scrollEdge(Edge.Top)
+          }})
+          ListComponent({onReachEnd: (callback: ResultCallback) => {
+            // collectViewModel.getCollectList(false,(result) => {
+            //   callback(result)
+            // })
+          },onRefreshing:(callback:ResultCallback) => {
+            // collectViewModel.getCollectList(true,(result) => {
+            //   callback(result)
+            // })
+          },
+            viewState:this.viewState,
+            scroller: this.scroller,
+            itemComponent:(item) => this.itemBuild(item)
+          })
+        }
+        .padding({top: BarUtils.getToolBarHeight()})
+        .height('100%')
+      }
+    
+    
+      aboutToAppear() {
+        messageViewModel.observeState((state) => {
+          this.viewState = state
+        })
+      }
+    
+      @Builder itemBuild(item:any) {
+    
+      }
+    }
+```

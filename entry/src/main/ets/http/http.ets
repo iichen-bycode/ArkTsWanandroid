@@ -3,12 +3,14 @@ import hilog from '@ohos.hilog';
 import { StorageKeys } from '../constants/StorageKeys';
 import { RoutePath } from '../route/RoutePath';
 import { Router } from '../route/Router';
-import { hideLoadingDialog, showLoadingDialog } from '../utils/DialogUtils';
 import { StorageUtils } from '../utils/StorageUtils';
 import showToast from '../utils/ToastUtils';
 import AxiosHttpRequest, { errorHandler } from './request';
 import { JsonUtils } from '../utils/JsonUtils';
 import mainViewModel from '../viewmodel/MainViewModel';
+import emitter from '@ohos.events.emitter';
+import { loadingEvent } from '../event/EventKeys';
+import { LoadingDialogEvent } from '../event/LoadingDialogEvent';
 
 /**
  * 具体实例
@@ -92,6 +94,21 @@ const axiosClient = new AxiosHttpRequest({
     },
   },
 });
+
+/**
+ * 展示loading
+ * @param tips
+ */
+export function showLoadingDialog(tips: string = "加载中") {
+  emitter.emit(loadingEvent, LoadingDialogEvent(true, tips))
+}
+
+/**
+ * 隐藏loading
+ */
+export function hideLoadingDialog() {
+  emitter.emit(loadingEvent, LoadingDialogEvent(false, ""))
+}
 
 /**
  * 暴露

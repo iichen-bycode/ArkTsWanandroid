@@ -1,4 +1,3 @@
-import { ON } from '@ohos.UiTest'
 import { ViewStateConstant } from '../../../constants/ViewStateConstant'
 import { Article } from '../../../model/ArticleModel'
 import { BarUtils } from '../../../utils/BarUtils'
@@ -7,11 +6,11 @@ import { InputDialog, InputDialogConfig } from '../../../view/InputDialog'
 import { CommonTopBar } from '../../../view/TopBar'
 import { ResultCallback } from '../../../viewmodel/BaseViewMode'
 import collectViewModel from '../../../viewmodel/CollectViewModel'
+import { ArticleItem } from '../../home/component/ArticleItem'
 import { ListComponent } from '../../home/component/ListComponent'
 @Entry
 @Component
 struct CollectPage {
-  @State message: string = 'Hello World'
   @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING
 
   private scroller: Scroller = new Scroller()
@@ -73,13 +72,17 @@ struct CollectPage {
           callback(result)
         })},
         viewState:this.viewState,
-        isCollectList: true,
         scroller: this.scroller,
-        ref:this.ref
+        ref:this.ref,
+        itemComponent:(item) => this.itemBuild(item)
       })
     }
     .padding({top: BarUtils.getToolBarHeight()})
     .height('100%')
+  }
+
+  @Builder itemBuild(item:any) {
+    ArticleItem({article: item,isCollectList: true})
   }
 
   aboutToAppear() {

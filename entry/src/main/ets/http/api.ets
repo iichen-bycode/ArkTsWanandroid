@@ -9,6 +9,7 @@ import { CommonModel } from '../model/CommonModel'
 import { SystemModel } from '../model/SystemModel'
 import { UserInfoModel } from '../model/UserInfoModel'
 import { RankModel } from '../model/RankModel'
+import { MessageWrapModel } from '../model/MessageModel'
 /**
  * 请求首页Banner
  * @param date
@@ -145,7 +146,7 @@ export function wxAuthorList() {
 export function wxAuthorArticleList(id:number,page:number) {
   return axiosClient.get<HomeArticleModel>({
     url: `wxarticle/list/${id}/${page}/json`,
-    showLoading:true
+    showLoading: page == 0
   })
 }
 
@@ -227,7 +228,6 @@ export function getSquareData(page:number) {
 export function getWendaData(page:number) {
   return axiosClient.get<HomeArticleModel>({
     url: `wenda/list/${page}/json`,
-    showLoading:true
   })
 }
 
@@ -300,6 +300,7 @@ export function getUnRead() {
 export function getRankList(page:number) {
   return axiosClient.get<RankModel>({
     url: `coin/rank/${page}/json`,
+    showLoading:true
   })
 }
 
@@ -311,6 +312,7 @@ export function getRankList(page:number) {
 export function getCollectList(page:number) {
   return axiosClient.get<HomeArticleModel>({
     url: `lg/collect/list/${page}/json`,
+    showLoading:true
   })
 }
 
@@ -329,6 +331,20 @@ export function addCollect(params: {
     needJumpToLogin:true,
     showLoading:true,
     checkLoginState:true
+  })
+}
+
+
+/**
+ * 消息列表
+ * @param date
+ * @returns
+ */
+export function getMessageList(page:number) {
+  return axiosClient.post<MessageWrapModel>({
+    url: `message/lg/readed_list/${page}/json`,
+    checkResultCode:true,
+    showLoading:true,
   })
 }
 

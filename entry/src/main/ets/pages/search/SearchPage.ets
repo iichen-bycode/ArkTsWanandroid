@@ -5,6 +5,7 @@ import { BarUtils } from '../../utils/BarUtils'
 import { CommonTopBar } from '../../view/TopBar'
 import { ResultCallback } from '../../viewmodel/BaseViewMode'
 import searchViewModel from '../../viewmodel/SearchViewModel'
+import { ArticleItem } from '../home/component/ArticleItem'
 import { ListComponent } from '../home/component/ListComponent'
 
 @Component
@@ -32,8 +33,12 @@ export struct SearchPage {
       },onRefreshing:(callback:ResultCallback) => {
         searchViewModel.search(true,this.searchKey,(result) => {
           callback(result)
-        },this.searchType,this.authorId)},viewState: this.viewState
+        },this.searchType,this.authorId)},viewState: this.viewState,itemComponent:(item) => this.itemBuild(item)
     }).margin({top: $r('app.float.size_12'),right: $r('app.float.size_8'),left: $r('app.float.size_8')})
    }.padding({top: BarUtils.getToolBarHeight()})
+  }
+
+  @Builder itemBuild(item:any) {
+    ArticleItem({article: item})
   }
 }

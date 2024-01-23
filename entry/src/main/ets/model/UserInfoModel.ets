@@ -8,7 +8,8 @@
  "username": "i**hen"
  }
  */
-export class UserInfoModel {
+import { CommonPageModel } from './CommonPageModel';
+export class UserInfoModel extends CommonPageModel{
   coinCount:number;
   level:number;
   nickname:string;
