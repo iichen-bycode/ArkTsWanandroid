@@ -16,6 +16,8 @@
     体系 => 
     项目 => 
 
+# 对于非Tabs和分页 需要注意使用 实例化ViewModel（防止同一实例造成数据异常）,否则可以使用 export default的方式使用
+
 ```
     import { BaseViewModel } from './BaseViewMode';
     export class RankViewModel extends BaseViewModel{
