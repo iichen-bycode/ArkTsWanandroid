@@ -1,24 +1,16 @@
 import { ViewStateConstant } from '../../../constants/ViewStateConstant'
 import { UserInfoModel } from '../../../model/UserInfoModel'
 import { BarUtils } from '../../../utils/BarUtils'
-import showToast from '../../../utils/ToastUtils'
-import { RefreshFooter } from '../../../view/RefreshFooter'
 import { CommonTopBar } from '../../../view/TopBar'
-import { StateComponent } from '../../../view/ViewStateComponent'
 import { ResultCallback } from '../../../viewmodel/BaseViewMode'
-import RankViewModel from '../../../viewmodel/RankViewModel'
+import { RankViewModel } from '../../../viewmodel/RankViewModel'
 import { ListComponent } from '../../home/component/ListComponent'
 @Component
 @Entry
 export struct RankPage {
-  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING
   private scroller: Scroller = new Scroller()
 
-  aboutToAppear() {
-    RankViewModel.observeState((state) => {
-      this.viewState = state
-    })
-  }
+  private viewModel = new RankViewModel()
 
   getIcon(index:number) {
     if(index == 0)
@@ -34,14 +26,14 @@ export struct RankPage {
         this.scroller.scrollEdge(Edge.Top)
       }})
       ListComponent({onReachEnd: (callback: ResultCallback) => {
-        RankViewModel.getRankList(false,(result) => {
+        this.viewModel.getRankList(false,(result) => {
           callback(result)
         })
       },onRefreshing:(callback:ResultCallback) => {
-        RankViewModel.getRankList(true,(result) => {
+        this.viewModel.getRankList(true,(result) => {
           callback(result)
         })},
-        viewState:this.viewState,
+        viewModel:this.viewModel,
         scroller: this.scroller,
         itemComponent:(item,index) => this.itemBuild(item,index)
       })

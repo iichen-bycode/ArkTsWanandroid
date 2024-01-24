@@ -1,11 +1,11 @@
+import { ViewStateConstant } from '../../../constants/ViewStateConstant'
 import { Article } from '../../../model/ArticleModel'
 import { CommonPageModel } from '../../../model/CommonPageModel'
 import { ComponentRef } from '../../../utils/ComponentRef'
 import { RefreshFooter } from '../../../view/RefreshFooter'
 import { StateComponent } from '../../../view/ViewStateComponent'
-import { ResultCallback } from '../../../viewmodel/BaseViewMode'
+import { BaseViewModel, ResultCallback } from '../../../viewmodel/BaseViewMode'
 import homeViewModel from '../../../viewmodel/HomeViewModel'
-import { ArticleItem } from './ArticleItem'
 
 @Builder function empty(){}
 
@@ -15,21 +15,24 @@ export struct ListComponent {
   @State refresh:boolean = false
   @State showEmpty:boolean = false
   @State showLoading:boolean = false
-  @Prop viewState: string
+
+  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING
 
   // 外部回调调用组件方法
   ref: ComponentRef<{ change: (Article) => {} }>
 
   scroller?: Scroller
 
-  onReachEnd: (callback: ResultCallback) => void
-  onRefreshing: (callback: ResultCallback) => void
+  viewModel:BaseViewModel
+
+  onReachEnd: (callback: ResultCallback,viewModel?:BaseViewModel) => void
+  onRefreshing: (callback: ResultCallback,viewModel?:BaseViewModel) => void
 
   @Builder itemBuild(model: any,index:number) {}
   @BuilderParam itemComponent: (model: any,index:number) => void = this.itemBuild
 
   build() {
-    StateComponent({viewState: this.viewState,retryCallback: () => this.refreshArticle()}) {
+    StateComponent({viewState: this.viewState,retryCallback: () => this.onRefresh()}) {
       Refresh({refreshing: $$this.refresh}) {
         List({scroller:this.scroller}) {
           ForEach(this.modelList,(item,index) => {
@@ -57,21 +60,23 @@ export struct ListComponent {
           if(!this.showEmpty) {
             this.showLoading = true
             this.onReachEnd((result) => {
+              this.showEmpty = true
               if(result.length == 0) {
-                this.showEmpty = true
               } else {
                 this.modelList = [...this.modelList,...result]
               }
-            })
+            },this.viewModel)
           }
         })
       }
-      .onRefreshing(() => this.refreshArticle())
+      .onRefreshing(() => this.onRefresh())
     }
   }
 
   aboutToAppear() {
-    this.refreshArticle()
+    this.viewModel?.observeState((state) => {
+      this.viewState = state
+    })
     this.ref?.export(this.hook())
   }
 
@@ -81,12 +86,12 @@ export struct ListComponent {
     }
   }
 
-  refreshArticle() {
+  onRefresh() {
     this.onRefreshing((result) => {
       this.modelList = result
       this.refresh = false
       this.showEmpty = false
       this.showLoading = false
-    })
+    },this.viewModel)
   }
 }

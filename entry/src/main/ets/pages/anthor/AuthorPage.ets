@@ -1,10 +1,9 @@
 import { StorageKeys } from '../../constants/StorageKeys'
-import { ViewStateConstant } from '../../constants/ViewStateConstant'
 import { CommonModel } from '../../model/CommonModel'
 import { RoutePath } from '../../route/RoutePath'
 import { BarUtils } from '../../utils/BarUtils'
 import showToast from '../../utils/ToastUtils'
-import authorViewModel from '../../viewmodel/AuthorViewModel'
+import authorViewModel, { AuthorViewModel } from '../../viewmodel/AuthorViewModel'
 import { ResultCallback } from '../../viewmodel/BaseViewMode'
 import { ArticleItem } from '../home/component/ArticleItem'
 import { ListComponent } from '../home/component/ListComponent'
@@ -18,7 +17,6 @@ export struct AuthorPage {
 
   @State authorList:CommonModel[] = []
   @State cacheIndex:boolean[] = []
-  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING
 
   build() {
     Column() {
@@ -45,14 +43,14 @@ export struct AuthorPage {
           //顶部导航栏内容
           TabContent() {
             if(this.currentIndex == index || this.cacheIndex[index]) {
-              ListComponent({onReachEnd: (callback: ResultCallback) => {
-                authorViewModel.wxAuthorArticleList(false,this.authorList[index].id,(result) => {
+              ListComponent({onReachEnd: (callback: ResultCallback,viewModel:AuthorViewModel) => {
+                viewModel.wxAuthorArticleList(false,this.authorList[index].id,(result) => {
                   callback(result)
                 })
-              },onRefreshing:(callback:ResultCallback) => {
-                authorViewModel.wxAuthorArticleList(true,this.authorList[index].id,(result) => {
+              },onRefreshing:(callback:ResultCallback,viewModel:AuthorViewModel) => {
+                viewModel.wxAuthorArticleList(true,this.authorList[index].id,(result) => {
                   callback(result)
-                })},viewState: this.viewState,
+                })},viewModel: new AuthorViewModel(),
                 itemComponent:(item) => this.itemBuild(item)
               })
             }
@@ -75,10 +73,6 @@ export struct AuthorPage {
   }
 
   aboutToAppear() {
-    authorViewModel.observeState((state) => {
-      this.viewState = state
-    })
-
     authorViewModel.wxAuthorList((res) => {
       this.authorList = res
       let len = this.authorList.length

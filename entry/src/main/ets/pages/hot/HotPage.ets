@@ -1,9 +1,8 @@
-import { ViewStateConstant } from '../../constants/ViewStateConstant'
 import { BarUtils } from '../../utils/BarUtils'
 import { InputDialog, InputDialogConfig } from '../../view/InputDialog'
 import { ResultCallback } from '../../viewmodel/BaseViewMode'
-import squareViewModel from '../../viewmodel/SquareViewModel'
-import wenDaViewModel from '../../viewmodel/WendaViewModel'
+import squareViewModel, { SquareViewModel } from '../../viewmodel/SquareViewModel'
+import wenDaViewModel, { WenDaViewModel } from '../../viewmodel/WendaViewModel'
 import { ArticleItem } from '../home/component/ArticleItem'
 import { ListComponent } from '../home/component/ListComponent'
 @Component
@@ -11,9 +10,6 @@ import { ListComponent } from '../home/component/ListComponent'
 export struct HotPage {
   @State currentIndex: number = 0
   controller = new TabsController()
-
-  @State squareViewState: string = ViewStateConstant.VIEW_STATE_LOADING
-  @State wendaViewState: string = ViewStateConstant.VIEW_STATE_SUCCESS
 
   private title: string[] = ['分享文章','提出问题']
   private submitTip: string[] = ['分享','提交']
@@ -79,25 +75,25 @@ export struct HotPage {
       .width('100%')
       Tabs({ controller: this.controller, barPosition: BarPosition.Start }) {
         TabContent() {
-          ListComponent({onReachEnd: (callback: ResultCallback) => {
-            squareViewModel.getSquareData(false,(result) => {
+          ListComponent({onReachEnd: (callback: ResultCallback,viewModel:SquareViewModel) => {
+            viewModel.getSquareData(false,(result) => {
               callback(result)
             })
-          },onRefreshing:(callback:ResultCallback) => {
-            squareViewModel.getSquareData(true,(result) => {
+          },onRefreshing:(callback:ResultCallback,viewModel:SquareViewModel) => {
+            viewModel.getSquareData(true,(result) => {
               callback(result)
-            })},viewState: this.squareViewState,itemComponent:(item) => this.itemBuild(item)
+            })},viewModel: new SquareViewModel(),itemComponent:(item) => this.itemBuild(item)
           })
         }
         TabContent() {
-          ListComponent({onReachEnd: (callback: ResultCallback) => {
-            wenDaViewModel.getWendaData(false,(result) => {
+          ListComponent({onReachEnd: (callback: ResultCallback,viewModel:WenDaViewModel) => {
+            viewModel.getWendaData(false,(result) => {
               callback(result)
             })
-          },onRefreshing:(callback:ResultCallback) => {
-            wenDaViewModel.getWendaData(true,(result) => {
+          },onRefreshing:(callback:ResultCallback,viewModel:WenDaViewModel) => {
+            viewModel.getWendaData(true,(result) => {
               callback(result)
-            })},viewState: this.wendaViewState,itemComponent:(item) => this.itemBuild(item)
+            })},viewModel: new WenDaViewModel(),itemComponent:(item) => this.itemBuild(item)
           })
         }
       }
@@ -113,12 +109,5 @@ export struct HotPage {
 
   @Builder itemBuild(item:any) {
     ArticleItem({article: item})
-  }
-
-
-  aboutToAppear() {
-    squareViewModel.observeState((state) => {
-      this.squareViewState = state
-    })
   }
 }

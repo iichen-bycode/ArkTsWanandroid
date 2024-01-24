@@ -1,10 +1,9 @@
-import { ViewStateConstant } from '../../../constants/ViewStateConstant'
 import { Article } from '../../../model/ArticleModel'
 import { CommonModel } from '../../../model/CommonModel'
 import { BarUtils } from '../../../utils/BarUtils'
 import { CommonTopBar } from '../../../view/TopBar'
 import { ResultCallback } from '../../../viewmodel/BaseViewMode'
-import projectViewModel from '../../../viewmodel/ProjectViewModel'
+import projectViewModel, { ProjectViewModel } from '../../../viewmodel/ProjectViewModel'
 import { ListComponent } from '../../home/component/ListComponent'
 import { ItemComponent } from './ItemComponent'
 @Entry
@@ -15,15 +14,10 @@ struct ProjectPage {
 
   @State authorList:CommonModel[] = []
   @State cacheIndex:boolean[] = []
-  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING
 
   private scroller: Scroller = new Scroller()
 
   aboutToAppear() {
-    projectViewModel.observeState((state) => {
-      this.viewState = state
-    })
-
     projectViewModel.projectCategory((res) => {
       this.authorList = res
       let len = this.authorList.length
@@ -43,14 +37,14 @@ struct ProjectPage {
           //顶部导航栏内容
           TabContent() {
             if(this.currentIndex == index || this.cacheIndex[index]) {
-              ListComponent({onReachEnd: (callback: ResultCallback) => {
-                projectViewModel.projectCategoryItemList(false,this.authorList[index].id,(result) => {
+              ListComponent({onReachEnd: (callback: ResultCallback,viewModel:ProjectViewModel) => {
+                viewModel.projectCategoryItemList(false,this.authorList[index].id,(result) => {
                   callback(result)
                 })
-              },onRefreshing:(callback:ResultCallback) => {
-                projectViewModel.projectCategoryItemList(true,this.authorList[index].id,(result) => {
+              },onRefreshing:(callback:ResultCallback,viewModel:ProjectViewModel) => {
+                viewModel.projectCategoryItemList(true,this.authorList[index].id,(result) => {
                   callback(result)
-                })},viewState: this.viewState,
+                })},viewModel: new ProjectViewModel(),
                 itemComponent:(item) => this.itemBuild(item)
               })
             }

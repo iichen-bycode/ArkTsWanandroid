@@ -5,7 +5,7 @@ import { ComponentRef } from '../../../utils/ComponentRef'
 import { InputDialog, InputDialogConfig } from '../../../view/InputDialog'
 import { CommonTopBar } from '../../../view/TopBar'
 import { ResultCallback } from '../../../viewmodel/BaseViewMode'
-import collectViewModel from '../../../viewmodel/CollectViewModel'
+import { CollectViewModel } from '../../../viewmodel/CollectViewModel'
 import { ArticleItem } from '../../home/component/ArticleItem'
 import { ListComponent } from '../../home/component/ListComponent'
 @Entry
@@ -17,6 +17,8 @@ struct CollectPage {
 
   ref = ComponentRef.useRef<{ change: (Article) => {} }>();
 
+  private collectViewModel = new CollectViewModel()
+
   dialogController: CustomDialogController = new CustomDialogController({
     builder: InputDialog({
       title: "新增收藏",
@@ -27,7 +29,7 @@ struct CollectPage {
         new InputDialogConfig("请输入链接地址(必填)",true)
       ],
       onSubmit: (value) => {
-        collectViewModel.addCollect({
+        this.collectViewModel.addCollect({
           title:value[0],
           author:value[1] || '',
           link:value[2],
@@ -64,14 +66,14 @@ struct CollectPage {
           })
       }
       ListComponent({onReachEnd: (callback: ResultCallback) => {
-        collectViewModel.getCollectList(false,(result) => {
+        this.collectViewModel.getCollectList(false,(result) => {
           callback(result)
         })
       },onRefreshing:(callback:ResultCallback) => {
-        collectViewModel.getCollectList(true,(result) => {
+        this.collectViewModel.getCollectList(true,(result) => {
           callback(result)
         })},
-        viewState:this.viewState,
+        viewModel:this.collectViewModel,
         scroller: this.scroller,
         ref:this.ref,
         itemComponent:(item) => this.itemBuild(item)
@@ -83,12 +85,6 @@ struct CollectPage {
 
   @Builder itemBuild(item:any) {
     ArticleItem({article: item,isCollectList: true})
-  }
-
-  aboutToAppear() {
-    collectViewModel.observeState((state) => {
-      this.viewState = state
-    })
   }
 }
 

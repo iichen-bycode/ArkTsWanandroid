@@ -2,7 +2,6 @@ import { getSquareData, shareArticle, wxAuthorArticleList, wxAuthorList, wxAutho
 import { HomeArticleModel } from '../model/HomeArticleModel';
 import { BaseViewModel, ResultCallback } from './BaseViewMode';
 export class SquareViewModel extends BaseViewModel {
-
   private page:number = 0
   private articleModel: HomeArticleModel = new HomeArticleModel()
   async getSquareData(isRefresh:boolean,callback: ResultCallback) {

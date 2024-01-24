@@ -4,7 +4,7 @@ import { BaseViewModel, ResultCallback } from './BaseViewMode';
 export class CollectViewModel extends BaseViewModel {
   collectModel:HomeArticleModel = new HomeArticleModel()
 
-  private page:number = 0
+  private page: number = 0
   async getCollectList(isRefresh:boolean,callback: ResultCallback) {
     if(isRefresh) {
       this.page = 0
@@ -31,8 +31,6 @@ export class CollectViewModel extends BaseViewModel {
         callback(result)
       })
   }
-
-
 }
 
 let collectViewModel = new CollectViewModel();

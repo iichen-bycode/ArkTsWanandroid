@@ -1,17 +1,16 @@
-import { ViewStateConstant } from '../../../constants/ViewStateConstant'
 import { MessageModel } from '../../../model/MessageModel'
 import { BarUtils } from '../../../utils/BarUtils'
 import showDialog from '../../../utils/DialogUtils'
 import showToast from '../../../utils/ToastUtils'
 import { CommonTopBar } from '../../../view/TopBar'
 import { ResultCallback } from '../../../viewmodel/BaseViewMode'
-import messageViewModel from '../../../viewmodel/MessageViewModel'
+import { MessageViewModel } from '../../../viewmodel/MessageViewModel'
 import { ListComponent } from '../../home/component/ListComponent'
 @Entry
 @Component
 struct MessagePage {
-  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING
   private scroller: Scroller = new Scroller()
+  private viewModel = new MessageViewModel()
 
   build() {
     Column() {
@@ -19,28 +18,21 @@ struct MessagePage {
         this.scroller.scrollEdge(Edge.Top)
       }})
       ListComponent({onReachEnd: (callback: ResultCallback) => {
-        messageViewModel.getMessageList(false,(result) => {
+        this.viewModel.getMessageList(false,(result) => {
           callback(result)
         })
       },onRefreshing:(callback:ResultCallback) => {
-        messageViewModel.getMessageList(true,(result) => {
+        this.viewModel.getMessageList(true,(result) => {
           callback(result)
         })
       },
-        viewState:this.viewState,
+        viewModel:this.viewModel,
         scroller: this.scroller,
         itemComponent:(item) => this.itemBuild(item)
       })
     }
     .padding({top: BarUtils.getToolBarHeight()})
     .height('100%')
-  }
-
-
-  aboutToAppear() {
-    messageViewModel.observeState((state) => {
-      this.viewState = state
-    })
   }
 
   @Builder itemBuild(item:MessageModel) {
@@ -88,7 +80,7 @@ struct MessagePage {
       }.justifyContent(FlexAlign.SpaceBetween).width('100%')
     }
     .onClick(() => {
-      messageViewModel.jumpToWebContent(item.fullLink,"问题详情")
+      this.viewModel.jumpToWebContent(item.fullLink,"问题详情")
     })
     .width('100%')
     .alignItems(HorizontalAlign.Start)

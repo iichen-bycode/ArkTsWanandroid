@@ -5,6 +5,7 @@ import { BaseViewModel, ResultCallback } from './BaseViewMode';
 export class SearchViewModel extends BaseViewModel {
   private page:number = 0
   private articleModel: HomeArticleModel = new HomeArticleModel()
+
   /**
    * 搜索
    * @param callback

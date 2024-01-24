@@ -13,7 +13,6 @@ export struct HomePage {
   @State bannerList: Banner[] = []
   @State searchKey:string = ''
   @State searchByUserKey:string = ''
-  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING
 
   build() {
     Column() {
@@ -63,7 +62,7 @@ export struct HomePage {
       },onRefreshing:(callback:ResultCallback) => {
         homeViewModel.getHomeArticle(true,(result) => {
           callback(result)
-        })},viewState:this.viewState,
+        })},viewModel:homeViewModel,
         itemComponent:(item) => this.itemBuild(item)
       })
     }
@@ -81,10 +80,6 @@ export struct HomePage {
   }
 
   aboutToAppear() {
-    homeViewModel.observeState((state) => {
-      this.viewState = state
-    })
-
     homeViewModel.getHomeBanner((result) => {
       this.bannerList = result
     })
