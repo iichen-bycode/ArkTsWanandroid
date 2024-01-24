@@ -12,10 +12,10 @@ export struct StateComponent {
 
   build() {
     Column() {
-      if (this.viewState != ViewStateConstant.VIEW_STATE_SUCCESS) {
-        this.holdContent()
-      } else {
+      if (this.viewState === ViewStateConstant.VIEW_STATE_SUCCESS || this.viewState === ViewStateConstant.VIEW_STATE_LOADING) {
         this.viewContent()
+      } else {
+        this.holdContent()
       }
     }.height('100%')
   }
