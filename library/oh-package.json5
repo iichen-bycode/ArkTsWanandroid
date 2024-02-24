@@ -19,6 +19,7 @@
   "tags": [
     "Network"
   ],
+  "dependencies": {},
   "license": "MIT",
   "devDependencies": {},
   "name": "@ohos/axios"

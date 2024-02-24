@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storePassword": "00000019D04DFF36AB55879EC1A7DAE5C2F74FBB26D79BD665E78C8ABE2966EC31DABDEFF8807C1DAB",
+          "certpath": "E:/HarmonyOS/wanandroid.cer",
+          "keyAlias": "iichen",
+          "keyPassword": "000000199E5784A03500BB8FB06887B1A8A620DFBDDA7F21B64F0D4FA9411981873744075E94261D30",
+          "profile": "E:/HarmonyOS/wanandroidRelease.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "E:/HarmonyOS/wanandroid.p12"
+        }
+      }
+    ],
     "compileSdkVersion": 9,
     "compatibleSdkVersion": 9,
     "products": [

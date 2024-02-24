@@ -106,3 +106,37 @@
       }
     }
 ```
+
+# @Prop @Link 基本数据类型
+
+```
+    Class Person {
+        name:string
+        age:number
+    }
+    
+    @State person:Person = new Person()
+
+    @Prop name:string
+    @Prop age:number
+    
+    @Link person:Person
+```
+
+# @provide @consumer 跨组件数据同步 无需显式传参
+
+# @Observe @ObjectLink用于嵌套对象或数组元素为对象的数据同步
+```
+    @Observer
+    Class Student {
+    
+    }
+    
+    @Observer
+    Class Person {
+        name:string
+        age:number
+        student:Student
+    }
+    
+```

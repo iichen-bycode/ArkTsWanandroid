@@ -1,12 +1,15 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
+import web_webview from '@ohos.web.webview'
 
 import { StatusBarManager } from '../utils/StatusBarManager'
 
 export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+    web_webview.WebviewController.initializeWebEngine()
+    globalThis.abilityWant = want
   }
 
   onDestroy() {

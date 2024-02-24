@@ -1,12 +1,12 @@
 {
+  "license": "",
+  "devDependencies": {},
+  "author": "",
   "name": "wanandroid",
-  "version": "1.0.0",
   "description": "Please describe the basic information.",
   "main": "",
-  "author": "",
-  "license": "",
+  "version": "1.0.0",
   "dependencies": {
-    "@ohos/axios": "file:library",
-  },
-  "devDependencies": {}
+    "@ohos/axios": "file:library"
+  }
 }
